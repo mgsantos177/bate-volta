@@ -1,40 +1,44 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import { StatusBar } from 'react-native';
 
 const Stack = createStackNavigator();
 
-function App() {
+import HomeRoutes from './Routes/home.routes';
+export default function App() {
+    const signed = useSelector((state) => state.auth.signed);
+
     return (
-        <NavigationContainer>
-             <StatusBar barStyle="light-content" backgroundColor="#40c3e4" />
-            <Stack.Navigator
-                headerMode="none"
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: '#e5f56c',
-                    },
-                    headerTintColor: '#fff',
-                }}
-            >
-                <Stack.Screen
-                    name="SignIn"
-                    component={SignIn}
-                    options={{
-                        headerTitleAlign: 'center',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                            borderColor: 'black',
-                        },
-                    }}
-                />
-                <Stack.Screen name="SignUp" component={SignUp} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator
+            headerMode="none"
+            initialRouteName="SignIn"
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#e5f56c',
+                },
+                headerTintColor: '#fff',
+            }}
+        >
+            {signed ? (
+                <Stack.Screen name="Explore" component={HomeRoutes} />
+            ) : (
+                <>
+                    <Stack.Screen
+                        name="SignIn"
+                        component={SignIn}
+                        options={{
+                            headerTitleAlign: 'center',
+                            headerTitleStyle: {
+                                fontWeight: 'bold',
+                                borderColor: 'black',
+                            },
+                        }}
+                    />
+                    <Stack.Screen name="SignUp" component={SignUp} />
+                </>
+            )}
+        </Stack.Navigator>
     );
 }
-
-export default App;

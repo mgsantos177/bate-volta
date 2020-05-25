@@ -14,15 +14,15 @@ export const Container = styled.View`
 
 export const Form = styled.View`
     align-self: stretch;
-    margin: 50px 30px 0 30px;
+    margin: 80px 30px 10px 30px;
 `;
 
 export const FormInput = styled(Input)`
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 `;
 
 export const SubmitButton = styled(Button)`
-    margin-top: 5px;
+    margin: 15px;
 `;
 
 export const SignLink = styled.TouchableOpacity`
