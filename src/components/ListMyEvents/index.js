@@ -1,14 +1,22 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
-import { parseISO, formatRelative } from 'date-fns';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { formatRelative, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { TouchableHighlight } from 'react-native';
-import { Container, NameEvent, Left, Avatar, Info, Name, Time } from './styles';
+import { TouchableOpacity } from 'react-native';
+import {
+    Container,
+    Avatar,
+    Left,
+    Info,
+    Name,
+    QtdeReservas,
+    Time,
+} from './styles';
 import praia from '../../assets/praia.jpg';
-import { useNavigation } from '@react-navigation/native';
-const Events = ({ data }) => {
-    const navigation = useNavigation();
+
+const ListMyEvents = ({ data }) => {
     const baseURL = 'http://10.0.2.2:3333';
+
     const dateParsed = useMemo(() => {
         return formatRelative(parseISO(data.data_inicio), new Date(), {
             locale: pt,
@@ -16,15 +24,8 @@ const Events = ({ data }) => {
     }, [data.data_inicio]);
 
     return (
-        <TouchableHighlight
-            onPress={() =>
-                navigation.navigate('Event Details', {
-                    data,
-                })
-            }
-            underlayColor="white"
-        >
-            <Container>
+        <Container>
+            <TouchableOpacity onPress={() => {}}>
                 <Left>
                     <Avatar
                         source={{
@@ -33,16 +34,17 @@ const Events = ({ data }) => {
                                 : 'https://api.adorable.io/avatars/285/abott@adorable.png',
                         }}
                     />
-
                     <Info>
-                        <NameEvent>{data.name}</NameEvent>
-                        <Name>com {data.User.name}</Name>
+                        <Name>{data.name}</Name>
                         <Time>{dateParsed}</Time>
+                        <QtdeReservas>
+                            Lugares Disponiveis: {data.lugares_disponiveis}
+                        </QtdeReservas>
                     </Info>
                 </Left>
-            </Container>
-        </TouchableHighlight>
+            </TouchableOpacity>
+        </Container>
     );
 };
 
-export default Events;
+export default ListMyEvents;

@@ -3,6 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import api from '../../../services/api';
 import history from '../../../services/history';
 import { signInSuccess, signFailure } from './actions';
+import { useNavigation } from '@react-navigation/native';
 
 export function* signIn({ payload }) {
     try {
@@ -18,8 +19,6 @@ export function* signIn({ payload }) {
         api.defaults.headers.Authorization = `Bearer ${token}`;
 
         yield put(signInSuccess(token, user));
-
-        // history.push('/dashboards');
     } catch (err) {
         Alert.alert(
             'Falha na autenticação',
@@ -49,10 +48,9 @@ export function* signUp({ payload }) {
             password,
         });
 
-        // history.push('/');
+        Alert.alert('Sucesso!', 'Usuario Cadastrado com sucesso');
     } catch (err) {
         Alert.alert('Erro!', 'Falha no cadastro, verifique seus dados!');
-
         yield put(signFailure());
     }
 }
@@ -67,9 +65,7 @@ export function setToken({ payload }) {
     }
 }
 
-export function signOut() {
-    history.push('/');
-}
+export function signOut() {}
 
 export default all([
     takeLatest('persist/REHYDRATE', setToken),

@@ -20,16 +20,22 @@ import {
 } from './styles';
 import StartRating from 'react-native-star-rating';
 const Categoria = ({ route }) => {
-    const { filtro } = route.params;
     const [events, setEvents] = useState([]);
     const isFocused = useIsFocused();
     const navigation = useNavigation();
+    const { filtro } = route.params;
+    const baseURL = 'http://10.0.2.2:3333';
 
     async function loadEvents() {
-        const response = await api.get(
-            `/events/category?limit=10&categoria=${filtro}`
-        );
-        console.tron.log(response);
+        let response;
+        if (filtro) {
+            response = await api.get(
+                `/events/category?limit=10&categoria=${filtro}`
+            );
+        } else {
+            response = await api.get(`/events`);
+        }
+
         setEvents(response.data);
     }
 
@@ -47,7 +53,7 @@ const Categoria = ({ route }) => {
     return (
         <Background>
             <Container>
-                <Title>{filtro.toUpperCase()}</Title>
+                <Title>{filtro ? filtro.toUpperCase() : 'Todos os Eventos'}</Title>
                 <FlatList
                     data={events}
                     keyExtractir={(item) => String(events.id)}
@@ -60,7 +66,13 @@ const Categoria = ({ route }) => {
                             }
                         >
                             <Content>
-                                <Image source={praia} />
+                                <Image
+                                    source={{
+                                        uri: item.EventFiles[0]
+                                            ? `${baseURL}/files/${item.EventFiles[0].path}`
+                                            : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                                    }}
+                                />
                                 <Info>
                                     <Name>{item.name}</Name>
                                     <OwnerInfo>

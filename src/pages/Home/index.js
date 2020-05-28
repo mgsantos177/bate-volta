@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-    View,
-    Text,
-    ScrollView,
-    StyleSheet,
-    TouchableHighlight,
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import { Container, Title, TitleDesc, List } from './styles';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { Title, TitleDesc, List, AllEventsButton } from './styles';
 import Category from '../../components/Explore/category';
+
 import praia from '../../assets/praia.jpg';
 import parque from '../../assets/parque.jpg';
 import experiencias from '../../assets/experiencias.jpg';
@@ -20,14 +15,14 @@ import Events from '../../components/Events';
 import api from '~/services/api';
 
 const Home = () => {
+    const navigation = useNavigation();
     const isFocused = useIsFocused();
     const [events, setEvents] = useState([]);
     const profile = useSelector((state) => state.user.profile);
     const nameHelper = profile.name.split(' ');
 
     async function loadEvents() {
-        const response = await api.get('/events');
-
+        const response = await api.get('/events?limit=5');
         setEvents(response.data);
     }
 
@@ -74,16 +69,36 @@ const Home = () => {
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                         >
-                            <Category imageUri={praia} name="Praias" filtro="praias" />
-                            <Category imageUri={parque} name="Parques" filtro="parques"/>
-                            <Category imageUri={esportes} name="Esportes" filtro="esportes"/>
-                            <Category imageUri={natureza} name="Natureza" filtro="natureza"/>
+                            <Category
+                                imageUri={praia}
+                                name="Praias"
+                                filtro="praias"
+                            />
+                            <Category
+                                imageUri={parque}
+                                name="Parques"
+                                filtro="parques"
+                            />
+                            <Category
+                                imageUri={esportes}
+                                name="Esportes"
+                                filtro="esportes"
+                            />
+                            <Category
+                                imageUri={natureza}
+                                name="Natureza"
+                                filtro="natureza"
+                            />
                             <Category
                                 imageUri={experiencias}
                                 name="Experiencias"
                                 filtro="experiencias"
                             />
-                            <Category imageUri={museu} name="Museu" filtro="museus"/>
+                            <Category
+                                imageUri={museu}
+                                name="Museu"
+                                filtro="museus"
+                            />
                         </ScrollView>
                     </View>
                     <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
@@ -101,9 +116,18 @@ const Home = () => {
                         </Text>
                         <List
                             data={events}
-                            keyExtractir={(item) => String(events.id)}
+                            keyExtractir={(item) => item.id}
                             renderItem={({ item }) => <Events data={item} />}
                         />
+                        <AllEventsButton
+                            onPress={() =>
+                                navigation.navigate('Categoria', {
+                                    filtro: '',
+                                })
+                            }
+                        >
+                            Mais Eventos
+                        </AllEventsButton>
                     </View>
                 </View>
             </View>

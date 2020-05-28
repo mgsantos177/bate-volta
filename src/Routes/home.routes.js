@@ -1,10 +1,12 @@
 import React from 'react';
-import Home from '../pages/Home';
+import Event from '../pages/Event';
 import Profile from '../pages/Profile';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStackScreen from './explore.routes';
 import AppointmentStackScreen from './appointment.routes';
+import ProfileStackScreen from './profile.routes';
+
 const Tab = createBottomTabNavigator();
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -63,14 +65,14 @@ export default function HomeRoutes() {
                     tabBarLabel: 'Criar Evento',
                 }}
                 name="create_event"
-                component={Home}
+                component={Event}
             />
             <Tab.Screen
                 options={{
                     tabBarLabel: 'Meu Perfil',
                 }}
                 name="profile"
-                component={Profile}
+                component={ProfileStackScreen}
             />
         </Tab.Navigator>
     );

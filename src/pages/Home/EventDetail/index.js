@@ -24,26 +24,33 @@ import {
     Separator,
     ReservaButton,
 } from './styles';
+import api from '../../../services/api';
 
 const EventDetail = ({ route }) => {
+    const baseURL = 'http://10.0.2.2:3333';
     const { data } = route.params;
     const navigation = useNavigation();
     console.tron.log(data);
-    const datePartidaParsed = format(parseISO(data.data_inicio), 'PPPppp', {
+    const datePartidaParsed = format(parseISO(data.data_inicio), 'PPPPpp', {
         locale: pt,
     });
 
-    const dateRetornoParsed = format(parseISO(data.data_fim), 'PPPppp', {
+    const dateRetornoParsed = format(parseISO(data.data_fim), 'PPPPpp', {
         locale: pt,
     });
 
-    console.tron.log(data);
+    console.tron.log(data.EventFiles[0]);
+
     return (
         <Background>
             <Container style={{ flex: 1 }}>
                 <ScrollView style={{ marginBottom: 30 }}>
                     <Image
-                        source={praia}
+                        source={{
+                            uri: data.EventFiles[0]
+                                ? `${baseURL}/files/${data.EventFiles[0].path}`
+                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                        }}
                         style={{
                             width: '100%',
                             height: 250,

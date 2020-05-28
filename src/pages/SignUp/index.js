@@ -1,8 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Image, Button } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import PhoneInput from 'react-native-phone-input';
+
 import Background from '../../components/Background/index';
 import img from '../../vendor/img/bus_blue.png';
-import { useDispatch, useSelector } from 'react-redux';
+
 import DataInput from '../../components/DataInput';
 import { signUpRequest } from '../../store/modules/auth/actions';
 
@@ -31,6 +34,19 @@ export default function SignUp({ navigation }) {
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    function changeTel(num) {
+        const formatNum = num.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        setTelefone(formatNum);
+    }
+
+    function changeCPF(num) {
+        const formatNum = num.replace(
+            /(\d{3})(\d{3})(\d{3})(\d{2})/,
+            '$1.$2.$3-$4'
+        );
+        setCpf(formatNum);
+    }
 
     const loading = useSelector((state) => state.auth.loading);
 
@@ -73,7 +89,7 @@ export default function SignUp({ navigation }) {
                         placeholder="CPF"
                         ref={cpfRef}
                         value={cpf}
-                        onChangeText={setCpf}
+                        onChangeText={(num) => changeCPF(num)}
                     />
 
                     <DataInput
@@ -92,7 +108,7 @@ export default function SignUp({ navigation }) {
                         onSubmitEditing={() => emailRef.current.focus()}
                         ref={telefoneRef}
                         value={telefone}
-                        onChangeText={setTelefone}
+                        onChangeText={(num) => changeTel(num)}
                     />
 
                     <FormInput

@@ -13,18 +13,21 @@ export default function HomeStackScreen({ route }) {
         <HomeStack.Navigator
             screenOptions={{
                 headerTransparent: true,
-                headerStyle:{
-                    backgroundColor:'white'
-                }
+                headerStyle: {
+                    backgroundColor: 'white',
+                },
             }}
-
         >
             <HomeStack.Screen
                 name="Home"
                 options={{ title: ' ' }}
                 component={Home}
             />
-            <HomeStack.Screen name="Categoria" component={Categoria} />
+            <HomeStack.Screen
+                name="Categoria"
+                options={{ title: ' ' }}
+                component={Categoria}
+            />
             <HomeStack.Screen
                 name="Event Details"
                 component={EventDetail}

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import Button from '../../components/Button';
 
 export const Container = styled.View`
     flex: 1;
@@ -24,3 +25,7 @@ export const List = styled.FlatList.attrs({
     showsVerticalScrollIndicator: false,
     contenteContainerStyle: { padding: 30 },
 })``;
+
+export const AllEventsButton = styled(Button)`
+    margin-bottom: 20px;
+`;

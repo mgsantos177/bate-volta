@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Appointment from '../pages/Appointment';
-import EventDetail from '../pages/Home/EventDetail';
+import AppointmentDetail from '../pages/Appointment/Details';
 
 const AppointmenteStack = createStackNavigator();
 
-export default function AppointmenteStackScreen({ route }) {
+export default function AppointmenteStackScreen() {
     return (
         <AppointmenteStack.Navigator
             screenOptions={{
@@ -21,8 +21,8 @@ export default function AppointmenteStackScreen({ route }) {
                 component={Appointment}
             />
             <AppointmenteStack.Screen
-                name="Event Details"
-                component={EventDetail}
+                name="Appointment Details"
+                component={AppointmentDetail}
                 options={{
                     title: ' ',
                     headerStyle: { backgroundColor: 'white' },

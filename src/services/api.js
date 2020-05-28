@@ -6,19 +6,16 @@ const api = axios.create({
 });
 
 api.registerInterceptWithStore = (store) => {
-    api.interceptors.response.use(
-        (response) => {
-            if (response.status === 401) {
-                alert('You are not authorized');
-            }
-            return response;
-        },
-        (error) => {
-            if (error.response.data.error === 'Token invalido') {
-                store.dispatch(signOut());
-            }
-        }
-    );
+    // api.interceptors.response.use(
+    //     (response) => {},
+    //     (error) => {
+    //         if (error.response.data.error === 'Token invalido') {
+    //             store.dispatch(signOut());
+    //         } else {
+    //             return error;
+    //         }
+    //     }
+    // );
 };
 
 export default api;

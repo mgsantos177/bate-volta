@@ -27,7 +27,7 @@ const Appointment = () => {
 
                 <List
                     data={appointment}
-                    keyExtractor={(item) => String(appointment.id)}
+                    keyExtractor={(item) => item.id}
                     renderItem={({ item }) => <ListAppointments data={item} />}
                 />
             </Container>

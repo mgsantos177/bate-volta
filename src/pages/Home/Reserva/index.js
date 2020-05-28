@@ -3,11 +3,8 @@ import { formatRelative, parseISO } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { RectButton } from 'react-native-gesture-handler';
 import pt from 'date-fns/locale/pt';
-import { Button, TextInput, Text, Alert } from 'react-native';
-
-import image from '../../../assets/praia.jpg';
+import { Text, Alert } from 'react-native';
 import Background from '../../../components/Background/home';
 import {
     Container,
@@ -22,10 +19,10 @@ import {
     QtdeText,
 } from './styles';
 import api from '~/services/api';
-import { createAppointment } from '../../../store/modules/reserva/actions';
 
 const Reserva = ({ route }) => {
     const { data } = route.params;
+    const baseURL = 'http://10.0.2.2:3333';
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [valueReserva, setValueReserva] = useState(1);
@@ -46,18 +43,30 @@ const Reserva = ({ route }) => {
     }
 
     async function criarReserva() {
-        dispatch(
-            createAppointment({
+        try {
+            const response = await api.post('reserva', {
                 event: data.id,
                 qtde_reservas: valueReserva,
-            })
-        );
+            });
+            console.tron.log(response);
+            await Alert.alert('Sucesso', 'Reserva Criada com sucesso');
+            navigation.navigate('reservas');
+        } catch (err) {
+            console.tron.log(err);
+            Alert.alert('Erro', err.response.data.error);
+        }
     }
 
     return (
         <Background>
             <Container>
-                <Avatar source={image} />
+                <Avatar
+                    source={{
+                        uri: data.EventFiles[0]
+                            ? `${baseURL}/files/${data.EventFiles[0].path}`
+                            : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                    }}
+                />
                 <Name>{data.name}</Name>
                 <Time>{data.data_inicio}</Time>
                 <Time>Lugares disponiveis: {data.lugares_disponiveis}</Time>
