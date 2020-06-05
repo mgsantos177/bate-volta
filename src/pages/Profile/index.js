@@ -38,6 +38,8 @@ const Profile = () => {
         }
     }, [isFocused]);
 
+    console.tron.log(userData);
+
     function handleLogout() {
         dispatch(signOut());
     }
@@ -60,7 +62,9 @@ const Profile = () => {
                         <Name>{profile.email}</Name>
                         <TouchableOpacity
                             onPress={() =>
-                                navigation.navigate('ProfileDetails')
+                                navigation.navigate('ProfileDetails', {
+                                    userData,
+                                })
                             }
                         >
                             <VerPerfil>Ver Perfil</VerPerfil>

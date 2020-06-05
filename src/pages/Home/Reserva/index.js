@@ -21,7 +21,7 @@ import {
 import api from '~/services/api';
 
 const Reserva = ({ route }) => {
-    const { data } = route.params;
+    const { data, datePartidaParsed } = route.params;
     const baseURL = 'http://10.0.2.2:3333';
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -50,7 +50,8 @@ const Reserva = ({ route }) => {
             });
             console.tron.log(response);
             await Alert.alert('Sucesso', 'Reserva Criada com sucesso');
-            navigation.navigate('reservas');
+            await navigation.navigate('Home');
+            await navigation.navigate('reservas');
         } catch (err) {
             console.tron.log(err);
             Alert.alert('Erro', err.response.data.error);
@@ -68,7 +69,7 @@ const Reserva = ({ route }) => {
                     }}
                 />
                 <Name>{data.name}</Name>
-                <Time>{data.data_inicio}</Time>
+                <Time>{datePartidaParsed}</Time>
                 <Time>Lugares disponiveis: {data.lugares_disponiveis}</Time>
                 <Separator />
 

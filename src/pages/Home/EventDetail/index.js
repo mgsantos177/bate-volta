@@ -30,7 +30,7 @@ const EventDetail = ({ route }) => {
     const baseURL = 'http://10.0.2.2:3333';
     const { data } = route.params;
     const navigation = useNavigation();
-    console.tron.log(data);
+
     const datePartidaParsed = format(parseISO(data.data_inicio), 'PPPPpp', {
         locale: pt,
     });
@@ -39,7 +39,7 @@ const EventDetail = ({ route }) => {
         locale: pt,
     });
 
-    console.tron.log(data.EventFiles[0]);
+    console.tron.log(data);
 
     return (
         <Background>
@@ -92,11 +92,18 @@ const EventDetail = ({ route }) => {
                             <Sessions>Mais Informações:</Sessions>
                             <MoreInfo>
                                 <TitleInfo>Local de Partida:</TitleInfo>
-                                <Info>{data.local_partida}</Info>
+                                <Info>
+                                    {data.end_partida}, {data.cidade_partida} -{' '}
+                                    {data.estado_partida}
+                                </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Endereço do Destino:</TitleInfo>
-                                <Info>{data.destino}</Info>
+                                <Info>
+                                    {' '}
+                                    {data.end_destino}, {data.cidade_destino} -{' '}
+                                    {data.estado_destino}
+                                </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Tempo de viagem:</TitleInfo>
@@ -110,6 +117,22 @@ const EventDetail = ({ route }) => {
                                 <TitleInfo>Maximo de participantes:</TitleInfo>
                                 <Info>{data.qtde_participantes_max}</Info>
                             </MoreInfo>
+                            <MoreInfo>
+                                <TitleInfo>Tipo de Veiculo:</TitleInfo>
+                                <Info>{data.tipo_veiculo}</Info>
+                            </MoreInfo>
+                            <MoreInfo>
+                                <TitleInfo>Modelo do Veiculo:</TitleInfo>
+                                <Info>{data.modelo_veiculo}</Info>
+                            </MoreInfo>
+                            <MoreInfo>
+                                <TitleInfo>Placa do Veiculo:</TitleInfo>
+                                <Info>{data.placa_veiculo}</Info>
+                            </MoreInfo>
+                            <MoreInfo>
+                                <TitleInfo>Cor do Veiculo:</TitleInfo>
+                                <Info>{data.cor_veiculo}</Info>
+                            </MoreInfo>
                         </EventInfo>
                     </View>
                 </ScrollView>
@@ -119,20 +142,21 @@ const EventDetail = ({ route }) => {
                         <Text>
                             {data.lugares_disponiveis -
                                 data.qtde_participantes_max}
-                            /{data.qtde_participantes_max}{' '}
+                            /{data.qtde_participantes_max}
+                            {'  '}
                             <Icon name="seat" size={20} />
                         </Text>
-                        <Price>R$ 52,00</Price>
+                        <Price>R$ {data.preco}</Price>
                     </Left>
                     <ReservaButton
                         title="Reservar"
                         onPress={() =>
                             navigation.navigate('Reserva', {
                                 data,
+                                datePartidaParsed,
                             })
                         }
                     >
-                        {' '}
                         Reservar
                     </ReservaButton>
                 </FooterInfo>

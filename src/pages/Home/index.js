@@ -11,6 +11,8 @@ import experiencias from '../../assets/experiencias.jpg';
 import esportes from '../../assets/esportes.jpg';
 import museu from '../../assets/museu.jpg';
 import natureza from '../../assets/natureza.jpg';
+import teatro from '../../assets/teatro.png';
+import shows from '../../assets/shows.jpg';
 import Events from '../../components/Events';
 import api from '~/services/api';
 
@@ -68,6 +70,7 @@ const Home = () => {
                         <ScrollView
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
+                            marginHorizontal={5}
                         >
                             <Category
                                 imageUri={praia}
@@ -80,9 +83,19 @@ const Home = () => {
                                 filtro="parques"
                             />
                             <Category
+                                imageUri={shows}
+                                name="Shows"
+                                filtro="shows"
+                            />
+                            <Category
                                 imageUri={esportes}
                                 name="Esportes"
                                 filtro="esportes"
+                            />
+                            <Category
+                                imageUri={teatro}
+                                name="Teatro"
+                                filtro="teatro"
                             />
                             <Category
                                 imageUri={natureza}
@@ -96,8 +109,8 @@ const Home = () => {
                             />
                             <Category
                                 imageUri={museu}
-                                name="Museu"
-                                filtro="museus"
+                                name="Outros"
+                                filtro="outros"
                             />
                         </ScrollView>
                     </View>

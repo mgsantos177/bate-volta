@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { parseISO, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Background from '../../../components/Background/home';
 import api from '../../../services/api';
-import praia from '../../../assets/praia.jpg';
 import {
     Container,
     Content,
@@ -25,7 +26,7 @@ const Categoria = ({ route }) => {
     const navigation = useNavigation();
     const { filtro } = route.params;
     const baseURL = 'http://10.0.2.2:3333';
-
+    console.tron.log(events);
     async function loadEvents() {
         let response;
         if (filtro) {
@@ -53,7 +54,9 @@ const Categoria = ({ route }) => {
     return (
         <Background>
             <Container>
-                <Title>{filtro ? filtro.toUpperCase() : 'Todos os Eventos'}</Title>
+                <Title>
+                    {filtro ? filtro.toUpperCase() : 'Todos os Eventos'}
+                </Title>
                 <FlatList
                     data={events}
                     keyExtractir={(item) => String(events.id)}
@@ -89,10 +92,18 @@ const Categoria = ({ route }) => {
                                             fullStarColor={'gold'}
                                         />
                                     </OwnerInfo>
-                                    <Date>12/05/2012</Date>
+                                    <Date>
+                                        {format(
+                                            parseISO(item.data_inicio),
+                                            'PPPPpp',
+                                            {
+                                                locale: pt,
+                                            }
+                                        )}
+                                    </Date>
                                     <PriceInfo>
-                                        <Price>R$ 80,00</Price>
-                                        <PriceText>/pessoa</PriceText>
+                                        <Price>R$ {item.preco}</Price>
+                                        <PriceText> /pessoa</PriceText>
                                     </PriceInfo>
                                 </Info>
                             </Content>

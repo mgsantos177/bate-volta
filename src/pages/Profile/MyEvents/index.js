@@ -6,12 +6,11 @@ import ListMyEvents from '../../../components/ListMyEvents';
 import api from '../../../services/api';
 import { useIsFocused } from '@react-navigation/native';
 
-
 const MyEvents = () => {
     const [events, setEvents] = useState();
     const isFocused = useIsFocused();
     async function loadEvents() {
-        const response = await api.get('users/events');
+        const response = await api.get('/events/user');
         setEvents(response.data);
     }
 

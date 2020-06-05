@@ -17,7 +17,7 @@ export default function HomeRoutes() {
             tabBarOptions={{
                 activeTintColor: '#fff',
                 inactiveTintColor: '#b5c7d3',
-
+                keyboardHidesTabBar: true,
                 style: {
                     backgroundColor: '#0388e0',
                 },

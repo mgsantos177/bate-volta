@@ -6,10 +6,10 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.View`
-    flex: 1;
-    padding-left: 10;
-    padding-top: 10;
-    margin-left: 5;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-bottom: 40px;
 `;
 
 export const Image = styled.Image`

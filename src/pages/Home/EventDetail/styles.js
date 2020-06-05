@@ -29,7 +29,7 @@ export const DateInfo = styled.Text`
 
 export const EventInfo = styled.View`
     align-items: flex-start;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 `;
 
 export const Sessions = styled.Text`
@@ -38,16 +38,22 @@ export const Sessions = styled.Text`
 `;
 
 export const MoreInfo = styled.View`
+    display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
+    margin-right: 10px;
 `;
 
 export const TitleInfo = styled.Text`
     margin-right: 5px;
     font-weight: bold;
+    font-size: 15px;
 `;
 
-export const Info = styled.Text``;
+export const Info = styled.Text`
+font-size: 14px;
+`;
 
 export const Separator = styled.View`
     height: 1px;
