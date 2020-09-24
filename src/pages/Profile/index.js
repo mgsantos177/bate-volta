@@ -28,7 +28,8 @@ const Profile = () => {
     const [userData, setUserData] = useState();
 
     async function getUserDetails() {
-        const response = await api.get(`/users/${profile.id}`);
+        const response = await api.get(`/user/${profile.id}`);
+        console.tron.log(response);
         setUserData(response.data);
     }
 
@@ -58,8 +59,10 @@ const Profile = () => {
                     />
 
                     <Info>
-                        <NameEvent>{profile.name}</NameEvent>
-                        <Name>{profile.email}</Name>
+                        <NameEvent>
+                            {userData ? userData.name : profile.name}
+                        </NameEvent>
+                        <Name>{userData ? userData.email : profile.email}</Name>
                         <TouchableOpacity
                             onPress={() =>
                                 navigation.navigate('ProfileDetails', {

@@ -50,6 +50,7 @@ export function* signUp({ payload }) {
 
         Alert.alert('Sucesso!', 'Usuario Cadastrado com sucesso');
     } catch (err) {
+        console.tron.log(err)
         Alert.alert('Erro!', 'Falha no cadastro, verifique seus dados!');
         yield put(signFailure());
     }

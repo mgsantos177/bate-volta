@@ -26,7 +26,7 @@ const Categoria = ({ route }) => {
     const navigation = useNavigation();
     const { filtro } = route.params;
     const baseURL = 'http://10.0.2.2:3333';
-    console.tron.log(events);
+
     async function loadEvents() {
         let response;
         if (filtro) {

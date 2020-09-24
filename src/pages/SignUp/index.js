@@ -30,7 +30,6 @@ export default function SignUp({ navigation }) {
     const [date, setDate] = useState();
     const [name, setName] = useState('');
     const [cpf, setCpf] = useState('');
-    const [dataNasc, setDataNasc] = useState('');
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

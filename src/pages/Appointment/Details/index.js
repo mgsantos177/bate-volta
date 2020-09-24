@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ScrollView, Alert } from 'react-native';
 import { parseISO, format } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
 import pt from 'date-fns/locale/pt';
 import StartRating from 'react-native-star-rating';
 import Background from '../../../components/Background/home';
@@ -24,13 +25,13 @@ import {
 } from './styles';
 
 import api from '../../../services/api';
-import { useNavigation } from '@react-navigation/native';
+
 
 const Details = ({ route }) => {
     const { data } = route.params;
     const baseURL = 'http://10.0.2.2:3333';
-    const nativagation = useNavigation();
-    console.tron.log(data);
+    const navigation = useNavigation();
+
 
     const datePartidaParsed = format(
         parseISO(data.Event.data_inicio),
@@ -141,7 +142,7 @@ const Details = ({ route }) => {
                     <UpdateButton
                         title="Reservar"
                         onPress={() =>
-                            navigation.navigate('Reserva', {
+                            navigation.navigate('Update Appointment', {
                                 data,
                             })
                         }

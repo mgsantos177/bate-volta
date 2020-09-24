@@ -26,7 +26,7 @@ const MyEvents = () => {
                 <Title>Meus Eventos</Title>
                 <List
                     data={events}
-                    keyExtractor={(item) => String(events.id)}
+                    keyExtractor={(item) => String(item.id)}
                     renderItem={({ item }) => <ListMyEvents data={item} />}
                 />
             </Container>

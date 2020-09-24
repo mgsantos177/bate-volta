@@ -48,12 +48,11 @@ const Reserva = ({ route }) => {
                 event: data.id,
                 qtde_reservas: valueReserva,
             });
-            console.tron.log(response);
+
             await Alert.alert('Sucesso', 'Reserva Criada com sucesso');
             await navigation.navigate('Home');
             await navigation.navigate('reservas');
         } catch (err) {
-            console.tron.log(err);
             Alert.alert('Erro', err.response.data.error);
         }
     }

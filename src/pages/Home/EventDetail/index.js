@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { parseISO, formatRelative, format, toDate } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StartRating from 'react-native-star-rating';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Background from '../../../components/Background/home';
 import praia from '../../../assets/praia.jpg';
 import {
@@ -19,10 +19,17 @@ import {
     TitleInfo,
     Info,
     FooterInfo,
+    AnswerBox,
+    AnswerText,
+    QuestionBox,
+    QuestionLink,
+    QuestionLinkText,
+    QuestionText,
     Left,
     Price,
     Separator,
     ReservaButton,
+    QuestionArea,
 } from './styles';
 import api from '../../../services/api';
 
@@ -30,6 +37,20 @@ const EventDetail = ({ route }) => {
     const baseURL = 'http://10.0.2.2:3333';
     const { data } = route.params;
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
+    const [questions, setQuestions] = useState([]);
+
+    async function loadQuestions() {
+        const response = await api.get(`/event/comments/${data.id}`);
+        setQuestions(response.data);
+    }
+
+    useEffect(() => {
+        if (isFocused) {
+            loadQuestions();
+        }
+    }, [isFocused]);
+
 
     const datePartidaParsed = format(parseISO(data.data_inicio), 'PPPPpp', {
         locale: pt,
@@ -38,8 +59,6 @@ const EventDetail = ({ route }) => {
     const dateRetornoParsed = format(parseISO(data.data_fim), 'PPPPpp', {
         locale: pt,
     });
-
-    console.tron.log(data);
 
     return (
         <Background>
@@ -134,6 +153,28 @@ const EventDetail = ({ route }) => {
                                 <Info>{data.cor_veiculo}</Info>
                             </MoreInfo>
                         </EventInfo>
+                        <Separator />
+                        <QuestionArea>
+                            <TouchableOpacity onPress={() => navigation.navigate('allQuestions', { questions,  event: data})}>
+                                <Sessions>Perguntas</Sessions>
+                                {questions[0] ? (
+                                    <>
+                                        <QuestionBox>
+                                            <Icon name="chat" size={20} color={'#999'} />
+                                            <QuestionText>{questions[0].comentario}</QuestionText>
+                                        </QuestionBox>
+                                        {questions[0].answer_id &&
+                                            <AnswerBox>
+                                                <Icon name="chat" size={15} color={'#ccc'} />
+                                                <AnswerText>{questions[0].answer_id.comentario}</AnswerText>
+                                            </AnswerBox>
+                                        }
+                                    </>) : <AnswerText> Nenhuma pergunta até o momento </AnswerText>}
+                                <QuestionLink onPress={() => navigation.navigate('newQuestion', { event: data })}>
+                                    <QuestionLinkText>Perguntar</QuestionLinkText>
+                                </QuestionLink>
+                            </TouchableOpacity>
+                        </QuestionArea>
                     </View>
                 </ScrollView>
                 <Separator />
@@ -160,8 +201,8 @@ const EventDetail = ({ route }) => {
                         Reservar
                     </ReservaButton>
                 </FooterInfo>
-            </Container>
-        </Background>
+            </Container >
+        </Background >
     );
 };
 

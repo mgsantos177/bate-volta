@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { signOut } from '../store/modules/auth/actions';
 
+const FormData = require('form-data');
+
 const api = axios.create({
     baseURL: 'http://10.0.2.2:3333',
 });

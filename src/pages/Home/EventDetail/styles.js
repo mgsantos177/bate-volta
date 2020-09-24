@@ -29,8 +29,47 @@ export const DateInfo = styled.Text`
 
 export const EventInfo = styled.View`
     align-items: flex-start;
-    margin-bottom: 40px;
 `;
+
+export const QuestionArea = styled.View`
+    flex:1;
+    margin-bottom: 40px;
+`
+
+export const QuestionBox = styled.View`
+    flex-direction:row;
+    margin-top:10px;
+ 
+`
+
+export const QuestionText = styled.Text`
+    margin-left: 5px;
+    font-weight:bold;
+`;
+
+export const AnswerBox = styled.View`
+    flex-direction:row;
+    margin-top:10px;
+ 
+`
+
+export const AnswerText = styled.Text`
+    margin-left: 5px;
+`;
+export const QuestionLink = styled.TouchableOpacity`
+    margin-top: 15px;
+    display:flex;
+    align-self:center;
+    
+`;
+export const QuestionLinkText = styled.Text`
+    
+    font-weight: 600;
+    font-size: 20px;
+    color: #2678e2;
+`;
+
+
 
 export const Sessions = styled.Text`
     font-size: 18px;

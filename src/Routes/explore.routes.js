@@ -5,6 +5,8 @@ import Home from '../pages/Home';
 import EventDetail from '../pages/Home/EventDetail';
 import Categoria from '../pages/Home/Categoria';
 import Reserva from '../pages/Home/Reserva';
+import AllQuestions from '../pages/Home/EventDetail/AllQuestions'
+import NewQuestion from '~/pages/Home/EventDetail/NewQuestion';
 
 const HomeStack = createStackNavigator();
 
@@ -27,6 +29,23 @@ export default function HomeStackScreen({ route }) {
                 name="Categoria"
                 options={{ title: ' ' }}
                 component={Categoria}
+            />
+            <HomeStack.Screen
+                name="allQuestions"
+                options={{
+                    title: 'Perguntas',
+
+                }}
+                component={AllQuestions}
+            />
+
+            <HomeStack.Screen
+                name="newQuestion"
+                options={{
+                    title: 'Nova Pergunta',
+
+                }}
+                component={NewQuestion}
             />
             <HomeStack.Screen
                 name="Event Details"

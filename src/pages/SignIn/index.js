@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Image, Button } from 'react-native';
+import { Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';

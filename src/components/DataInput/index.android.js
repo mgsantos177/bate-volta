@@ -5,7 +5,7 @@ import { pt } from 'date-fns/locale';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Container, DateButton, DateText } from './styles';
 
-const DataInput = ({ date, onChange }) => {
+const DataInput = ({ date, onChange, color }) => {
     let dataFormatted;
     if (date) {
         dataFormatted = useMemo(
@@ -29,7 +29,10 @@ const DataInput = ({ date, onChange }) => {
 
     return (
         <Container>
-            <DateButton onPress={handleOpenPicker}>
+            <DateButton
+                onPress={handleOpenPicker}
+                style={{ backgroundColor: color || 'rgba(0, 0, 0, 0.1)' }}
+            >
                 <Icon name="event" color="#fff" size={20} />
                 <DateText>
                     {' '}
