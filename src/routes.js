@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
+import Teste from './pages/Teste/test';
+
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import SignUpFirebase from './pages/SignUpFirebase';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +16,7 @@ export default function App() {
     return (
         <Stack.Navigator
             headerMode="none"
-            initialRouteName="SignIn"
+            initialRouteName="SignInFirebase"
             screenOptions={{
                 headerStyle: {
                     backgroundColor: '#e5f56c',
@@ -26,8 +29,8 @@ export default function App() {
             ) : (
                 <>
                     <Stack.Screen
-                        name="SignIn"
-                        component={SignIn}
+                        name="SignInFirebase"
+                        component={Teste}
                         options={{
                             headerTitleAlign: 'center',
                             headerTitleStyle: {
@@ -36,7 +39,12 @@ export default function App() {
                             },
                         }}
                     />
+                    <Stack.Screen name="SignIn" component={SignIn} />
                     <Stack.Screen name="SignUp" component={SignUp} />
+                    <Stack.Screen
+                        name="SignUpFirebase"
+                        component={SignUpFirebase}
+                    />
                 </>
             )}
         </Stack.Navigator>

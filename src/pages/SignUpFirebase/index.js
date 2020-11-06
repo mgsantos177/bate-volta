@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Image, Button, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import PhoneInput from 'react-native-phone-input';
-
 import Background from '../../components/Background/index';
 import img from '../../vendor/img/bus_blue.png';
 
@@ -16,9 +14,13 @@ import {
     SubmitButton,
     SignLink,
     SignLinkText,
+    TopText1,
+    TopText2,
+    TopView,
 } from './styles';
 
-export default function SignUp({ navigation }) {
+export default function SignUpFirebase({ navigation, route }) {
+    const { data } = route.params;
     const dispatch = useDispatch();
 
     const cpfRef = useRef();
@@ -28,10 +30,10 @@ export default function SignUp({ navigation }) {
     const passwordRef = useRef();
 
     const [date, setDate] = useState();
-    const [name, setName] = useState('');
+    const [name, setName] = useState(data.name);
     const [cpf, setCpf] = useState('');
     const [telefone, setTelefone] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(data.email);
     const [password, setPassword] = useState('');
 
     function changeTel(num) {
@@ -70,16 +72,35 @@ export default function SignUp({ navigation }) {
         <Background>
             <ScrollView>
                 <Container>
-                    <Image source={img} style={{ width: 175, height: 175 }} />
+                    <TopView>
+                        <TopText1>Notamos que você é novo por aqui...</TopText1>
+                        <TopText2>
+                            {' '}
+                            Precisamos de mais algumas informações antes de
+                            continuar!
+                        </TopText2>
+                    </TopView>
+
                     <Form>
                         <FormInput
                             icon="person"
                             keyboardType="default"
                             autoCapitalize="words"
                             placeholder="Nome Completo"
-                            onSubmitEditing={() => cpfRef.current.focus()}
+                            onSubmitEditing={() => emailRef.current.focus()}
                             value={name}
                             onChangeText={setName}
+                        />
+                        <FormInput
+                            icon="mail-outline"
+                            keyboardType="email-address"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            placeholder="E-mail"
+                            onSubmitEditing={() => cpfRef.current.focus()}
+                            ref={emailRef}
+                            value={email}
+                            onChangeText={setEmail}
                         />
                         <FormInput
                             icon="subtitles"
@@ -94,10 +115,9 @@ export default function SignUp({ navigation }) {
 
                         <DataInput
                             date={date}
-                            text={'Data de Nascimento'}
                             onChange={setDate}
                             ref={dataNascRef}
-                            onSubmitEditing={() => emailRef.current.focus()}
+                            onSubmitEditing={() => telefoneRef.current.focus()}
                         />
 
                         <FormInput
@@ -106,27 +126,16 @@ export default function SignUp({ navigation }) {
                             autoCorrect={false}
                             autoCapitalize="none"
                             placeholder="Telefone"
-                            onSubmitEditing={() => emailRef.current.focus()}
+                            onSubmitEditing={() => passwordRef.current.focus()}
                             ref={telefoneRef}
                             value={telefone}
                             onChangeText={(num) => changeTel(num)}
                         />
 
                         <FormInput
-                            icon="mail-outline"
-                            keyboardType="email-address"
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            placeholder="E-mail"
-                            onSubmitEditing={() => passwordRef.current.focus()}
-                            ref={emailRef}
-                            value={email}
-                            onChangeText={setEmail}
-                        />
-                        <FormInput
                             icon="lock-outline"
                             secureTextEntry
-                            placeholder="Senha"
+                            placeholder="Senha exclusiva para o Bate & Volta"
                             ref={passwordRef}
                             value={password}
                             onSubmitEditing={handleSubmit}

@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import Badge from '../../components/Badge';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { Title, TitleDesc, List, AllEventsButton } from './styles';
+import {
+    Title,
+    TitleDesc,
+    List,
+    AllEventsButton,
+    NotificationArea,
+} from './styles';
 import Category from '../../components/Explore/category';
 
 import praia from '../../assets/praia.jpg';
@@ -20,12 +28,18 @@ const Home = () => {
     const navigation = useNavigation();
     const isFocused = useIsFocused();
     const [events, setEvents] = useState([]);
+    const [notifications, setNotifications] = useState(0);
     const profile = useSelector((state) => state.user.profile);
     const nameHelper = profile.name.split(' ');
 
     async function loadEvents() {
         const response = await api.get('/events?limit=5');
+        const getNotification = await api.get('/notifications/active');
         setEvents(response.data);
+
+        console.tron.log(getNotification);
+
+        setNotifications(getNotification.data);
     }
 
     useEffect(() => {
@@ -33,6 +47,8 @@ const Home = () => {
             loadEvents();
         }
     }, [isFocused]);
+
+    const BadgedIcon = Badge(notifications, { top: 8, left: 20 })(Icon);
 
     return (
         <ScrollView scrollEventThrottle={16}>
@@ -42,6 +58,22 @@ const Home = () => {
                     backgroundColor: 'white',
                 }}
             >
+                <NotificationArea>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Notifications')}
+                    >
+                        <>
+                            <BadgedIcon
+                                name={`${
+                                    Platform.OS === 'ios' ? 'ios' : 'md'
+                                }-chatbubbles`}
+                                type="ionicon"
+                                color="white"
+                            />
+                            <Icon name="notifications" size={30}></Icon>
+                        </>
+                    </TouchableOpacity>
+                </NotificationArea>
                 <Title>
                     Qual vai ser o Bate & Volta de hoje, {nameHelper[0]} ?
                 </Title>

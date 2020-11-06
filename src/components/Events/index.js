@@ -8,7 +8,8 @@ import praia from '../../assets/praia.jpg';
 import { useNavigation } from '@react-navigation/native';
 const Events = ({ data }) => {
     const navigation = useNavigation();
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
+
     const dateParsed = useMemo(() => {
         return formatRelative(parseISO(data.data_inicio), new Date(), {
             locale: pt,
@@ -28,8 +29,8 @@ const Events = ({ data }) => {
                 <Left>
                     <Avatar
                         source={{
-                            uri: data.EventFiles[0]
-                                ? `${baseURL}/files/${data.EventFiles[0].path}`
+                            uri: data.images
+                                ? `${baseURL}/${data.images[0]}`
                                 : 'https://api.adorable.io/avatars/285/abott@adorable.png',
                         }}
                     />

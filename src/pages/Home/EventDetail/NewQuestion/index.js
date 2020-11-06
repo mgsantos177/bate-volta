@@ -9,22 +9,20 @@ const NewQuestion = ({ route }) => {
     const navigation = useNavigation();
     const [text, setText] = useState('');
 
-    console.tron.log(data);
-
     // async function handleSubmit() {
-    //   console.tron.log(text)
+    //
 
     //   try {
     //     const response = await api.post('/events/comments', {
     //       event: data.id,
     //       comentario: text.toString()
     //     })
-    //     console.tron.log(response)
+    //
     //     Alert.alert('Sucesso', 'Pergunta registrada com sucesso')
     //     await navigation.navigate('Event Details', { data })
 
     //   } catch (error) {
-    //     console.tron.log(error)
+    //
     //   }
     // }
 
@@ -34,7 +32,7 @@ const NewQuestion = ({ route }) => {
                 comentario: text,
                 event: data.id,
             });
-            console.tron.log(response);
+
             await navigation.navigate('Event Details', {
                 data,
             });

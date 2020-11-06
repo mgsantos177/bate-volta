@@ -22,7 +22,7 @@ import api from '~/services/api';
 
 const Reserva = ({ route }) => {
     const { data, datePartidaParsed } = route.params;
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'http://10.0.2.2:3332';
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [valueReserva, setValueReserva] = useState(1);

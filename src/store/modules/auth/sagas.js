@@ -2,8 +2,9 @@ import { Alert } from 'react-native';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import api from '../../../services/api';
 import history from '../../../services/history';
-import { signInSuccess, signFailure } from './actions';
+import { signInSuccess, signFailure, signInRequest } from './actions';
 import { useNavigation } from '@react-navigation/native';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 export function* signIn({ payload }) {
     try {
@@ -39,7 +40,7 @@ export function* signUp({ payload }) {
             password,
         } = payload;
 
-        yield call(api.post, 'users', {
+        const response = yield call(api.post, 'users', {
             name,
             cpf: cpfString,
             data_nasc: dataNascConv,
@@ -49,8 +50,9 @@ export function* signUp({ payload }) {
         });
 
         Alert.alert('Sucesso!', 'Usuario Cadastrado com sucesso');
+
+        yield put(signInRequest(email, password));
     } catch (err) {
-        console.tron.log(err)
         Alert.alert('Erro!', 'Falha no cadastro, verifique seus dados!');
         yield put(signFailure());
     }
@@ -66,7 +68,16 @@ export function setToken({ payload }) {
     }
 }
 
-export function signOut() {}
+export function signOut() {
+    signOut = async () => {
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+}
 
 export default all([
     takeLatest('persist/REHYDRATE', setToken),

@@ -5,7 +5,7 @@ import { pt } from 'date-fns/locale';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Container, DateButton, DateText } from './styles';
 
-const DataInput = ({ date, onChange, color }) => {
+const DataInput = ({ date, onChange, color, text, colorIcon }) => {
     let dataFormatted;
     if (date) {
         dataFormatted = useMemo(
@@ -17,7 +17,7 @@ const DataInput = ({ date, onChange, color }) => {
     async function handleOpenPicker() {
         const { action, year, month, day } = await DatePickerAndroid.open({
             mode: 'spinner',
-            maxDate: subYears(new Date(), 18),
+
             date,
         });
 
@@ -33,10 +33,10 @@ const DataInput = ({ date, onChange, color }) => {
                 onPress={handleOpenPicker}
                 style={{ backgroundColor: color || 'rgba(0, 0, 0, 0.1)' }}
             >
-                <Icon name="event" color="#fff" size={20} />
-                <DateText>
+                <Icon name="event" color={colorIcon || '#fff'} size={20} />
+                <DateText style={colorIcon && { color: colorIcon }}>
                     {' '}
-                    {date ? dataFormatted : 'Data de Nascimento'}
+                    {date ? dataFormatted : text}
                 </DateText>
             </DateButton>
         </Container>

@@ -42,7 +42,7 @@ const ProfileDetails = ({ route }) => {
     }, [isFocused]);
 
     const loading = useSelector((state) => state.auth.loading);
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'http://10.0.2.2:3332';
     const cpfRef = useRef();
     const dataNascRef = useRef();
     const telefoneRef = useRef();
@@ -52,6 +52,7 @@ const ProfileDetails = ({ route }) => {
 
     const userDate = new Date(userData.data_nasc);
 
+    const [avatarPhoto, setAvatar] = useState('');
     const [date, setDate] = useState(userDate);
     const [name, setName] = useState(userData.name);
     const [cpf, setCpf] = useState(userData.cpf);
@@ -79,37 +80,32 @@ const ProfileDetails = ({ route }) => {
                 takePhotoButtonTitle: 'Usar Camera',
                 chooseFromLibraryButtonTitle: 'Escolha da Galeria',
             },
-            async (responseUpdate) => {
-                if (responseUpdate.didCancel) {
+            async (response) => {
+                if (response.didCancel) {
                     return;
                 }
 
-                if (responseUpdate.error) {
+                if (response.error) {
                     Alert.alert('Erro ao Atualizar seu avatar');
-                    console.tron.log(responseUpdate);
+
                     return;
                 }
 
-                const cpfString = cpf.toString();
-                const telString = telefone.toString();
-                const dataNascConv = date;
+                const data = new FormData();
 
-                dispatch(
-                    updateProfileRequest({
-                        name,
-                        cpf: cpfString,
-                        data_nasc: dataNascConv,
-                        telefone: telString,
-                        email,
-                        avatar_id: 17,
-                    })
-                );
-
-                await navigation.navigate('profile', {
-                    userData,
+                data.append('file', {
+                    uri: response.uri,
+                    name: response.fileName,
+                    type: 'image/jpeg',
                 });
 
-                await this.getUserDetails();
+
+                const resp = await api.post('/files', data);
+
+                if (resp.data.id) {
+                    setAvatar(resp.data.path);
+                    await api.put('/users', { avatar_id: resp.data.id });
+                }
             }
         );
     }
@@ -141,7 +137,9 @@ const ProfileDetails = ({ route }) => {
                 <TouchableOpacity onPress={handleUpdateAvatar}>
                     <Avatar
                         source={{
-                            uri: userData.avatar
+                            uri: avatarPhoto
+                                ? `${baseURL}/files/${avatarPhoto}`
+                                : userData.avatar
                                 ? `${baseURL}/files/${userData.avatar.path}`
                                 : 'https://api.adorable.io/avatars/285/abott@adorable.png',
                         }}

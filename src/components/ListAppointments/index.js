@@ -22,7 +22,7 @@ const ListAppointments = ({ data }) => {
         });
     }, [data.Event.data_inicio]);
 
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
 
     return (
         <TouchableOpacity
@@ -36,8 +36,8 @@ const ListAppointments = ({ data }) => {
                 <Left>
                     <Avatar
                         source={{
-                            uri: data.Event.EventFiles[0]
-                                ? `${baseURL}/files/${data.Event.EventFiles[0].path}`
+                            uri: data.images
+                                ? `${baseURL}/${data.images[0]}`
                                 : 'https://api.adorable.io/avatars/285/abott@adorable.png',
                         }}
                     />

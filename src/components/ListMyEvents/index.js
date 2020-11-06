@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { formatRelative, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {
     Container,
     Avatar,
@@ -15,7 +16,8 @@ import {
 import praia from '../../assets/praia.jpg';
 
 const ListMyEvents = ({ data }) => {
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'http://10.0.2.2:3332';
+    const navigation = useNavigation();
 
     const dateParsed = useMemo(() => {
         return formatRelative(parseISO(data.data_inicio), new Date(), {
@@ -25,7 +27,13 @@ const ListMyEvents = ({ data }) => {
 
     return (
         <Container>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('My Event Details', {
+                        data,
+                    });
+                }}
+            >
                 <Left>
                     <Avatar
                         source={{

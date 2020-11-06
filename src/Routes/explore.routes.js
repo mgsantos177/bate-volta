@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Notification from '../pages/Home/Notification';
 import Home from '../pages/Home';
 import EventDetail from '../pages/Home/EventDetail';
 import Categoria from '../pages/Home/Categoria';
 import Reserva from '../pages/Home/Reserva';
-import AllQuestions from '../pages/Home/EventDetail/AllQuestions'
+import AllQuestions from '../pages/Home/EventDetail/AllQuestions';
 import NewQuestion from '~/pages/Home/EventDetail/NewQuestion';
 
 const HomeStack = createStackNavigator();
@@ -31,10 +32,14 @@ export default function HomeStackScreen({ route }) {
                 component={Categoria}
             />
             <HomeStack.Screen
+                name="Notifications"
+                options={{ title: 'Notificações' }}
+                component={Notification}
+            />
+            <HomeStack.Screen
                 name="allQuestions"
                 options={{
                     title: 'Perguntas',
-
                 }}
                 component={AllQuestions}
             />
@@ -43,7 +48,6 @@ export default function HomeStackScreen({ route }) {
                 name="newQuestion"
                 options={{
                     title: 'Nova Pergunta',
-
                 }}
                 component={NewQuestion}
             />

@@ -10,7 +10,7 @@ const MyEvents = () => {
     const [events, setEvents] = useState();
     const isFocused = useIsFocused();
     async function loadEvents() {
-        const response = await api.get('/events/user');
+        const response = await api.get('/user/events');
         setEvents(response.data);
     }
 

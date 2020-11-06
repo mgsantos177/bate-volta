@@ -53,6 +53,7 @@ export default function HomeRoutes() {
                 name="Home"
                 component={HomeStackScreen}
             />
+
             <Tab.Screen
                 options={{
                     tabBarLabel: 'Minhas Reservas',

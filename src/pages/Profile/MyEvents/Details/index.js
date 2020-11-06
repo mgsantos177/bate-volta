@@ -5,7 +5,7 @@ import { parseISO, format } from 'date-fns';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import pt from 'date-fns/locale/pt';
 import StartRating from 'react-native-star-rating';
-import Background from '../../../components/Background/home';
+import Background from '../../../../components/Background/home';
 import {
     Container,
     Content,
@@ -25,19 +25,23 @@ import {
     Info,
 } from './styles';
 
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 const Details = ({ route }) => {
     const { data } = route.params;
     const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
     const navigation = useNavigation();
 
+    console.tron.log(data);
+
     const isFocused = useIsFocused();
     const [images, setImages] = useState([]);
+    const [eventData, setEventData] = useState();
 
     async function loadQuestions() {
-        const response2 = await api.get(`/events/${data.Event.id}`);
+        const response2 = await api.get(`/events/${data.id}`);
 
+        setEventData(response2);
         if (response2.data.images) {
             setImages(response2.data.images);
         }
@@ -49,13 +53,9 @@ const Details = ({ route }) => {
         }
     }, [isFocused]);
 
-    const datePartidaParsed = format(
-        parseISO(data.Event.data_inicio),
-        'PPPPpp',
-        {
-            locale: pt,
-        }
-    );
+    const datePartidaParsed = format(parseISO(data.data_inicio), 'PPPPpp', {
+        locale: pt,
+    });
 
     async function handleCancel() {
         try {
@@ -68,7 +68,7 @@ const Details = ({ route }) => {
         }
     }
 
-    const dateRetornoParsed = format(parseISO(data.Event.data_fim), 'PPPPpp', {
+    const dateRetornoParsed = format(parseISO(data.data_fim), 'PPPPpp', {
         locale: pt,
     });
 
@@ -103,69 +103,50 @@ const Details = ({ route }) => {
                     )}
 
                     <Content>
-                        <Title>{data.Event.name}</Title>
-                        <OwnerInfo>
-                            <Owner>com {data.Event.User.name}</Owner>
-                            <StartRating
-                                disabled={true}
-                                maxStars={5}
-                                rating={4}
-                                starSize={18}
-                                iconSet={'MaterialIcons'}
-                                fullStar={'star'}
-                                emptyStar={'star-border'}
-                                halfStar={'star-half'}
-                                fullStarColor={'gold'}
-                            />
-                        </OwnerInfo>
+                        <Title>{data.name}</Title>
+
                         <DateInfo>Partida: {datePartidaParsed}</DateInfo>
                         <DateInfo>Retorno: {dateRetornoParsed}</DateInfo>
-                        <Owner>
-                            Você reservou {data.qtde_reservas} lugares nesse
-                            evento
-                        </Owner>
                         <Separator />
                         <EventInfo>
                             <Sessions>Descrição:</Sessions>
-                            <Text>{data.Event.descricao}</Text>
+                            <Text>{data.descricao}</Text>
                             <Separator />
                             <Sessions>Mais Informações:</Sessions>
                             <MoreInfo>
                                 <TitleInfo>Local de Partida:</TitleInfo>
                                 <Info>
-                                    {data.Event.end_partida},{' '}
-                                    {data.Event.cidade_partida} -{' '}
-                                    {data.Event.estado_partida}
+                                    {data.end_partida}, {data.cidade_partida} -{' '}
+                                    {data.estado_partida}
                                 </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Endereço do Destino:</TitleInfo>
                                 <Info>
                                     {' '}
-                                    {data.Event.end_destino},{' '}
-                                    {data.Event.cidade_destino} -{' '}
-                                    {data.Event.estado_destino}
+                                    {data.end_destino}, {data.cidade_destino} -{' '}
+                                    {data.estado_destino}
                                 </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Tempo de viagem:</TitleInfo>
-                                <Info>{data.Event.tempo_viagem} hrs</Info>
+                                <Info>{data.tempo_viagem} hrs</Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Tipo de Veiculo:</TitleInfo>
-                                <Info>{data.Event.tipo_veiculo}</Info>
+                                <Info>{data.tipo_veiculo}</Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Modelo do Veiculo:</TitleInfo>
-                                <Info>{data.Event.modelo_veiculo}</Info>
+                                <Info>{data.modelo_veiculo}</Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Placa do Veiculo:</TitleInfo>
-                                <Info>{data.Event.placa_veiculo}</Info>
+                                <Info>{data.placa_veiculo}</Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Cor do Veiculo:</TitleInfo>
-                                <Info>{data.Event.cor_veiculo}</Info>
+                                <Info>{data.cor_veiculo}</Info>
                             </MoreInfo>
                         </EventInfo>
                     </Content>
@@ -181,8 +162,7 @@ const Details = ({ route }) => {
                             })
                         }
                     >
-                        {' '}
-                        Alterar
+                        Lista de Passageiros
                     </UpdateButton>
                     <CancelButton
                         title="Reservar"

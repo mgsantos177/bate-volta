@@ -1,11 +1,21 @@
 import React, { useRef, useState } from 'react';
-import { Image } from 'react-native';
+import { Image, Button } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+} from '@react-native-community/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Background from '../../components/Background/index';
 import { signInRequest } from '../../store/modules/auth/actions';
 import img from '../../vendor/img/bus_blue.png';
+import api from '../../services/api';
+import { signInSuccess } from '../../store/modules/auth/actions';
+
+import { LoginManager, AccessToken, LoginButton } from 'react-native-fbsdk';
 
 import {
     Container,
@@ -14,6 +24,8 @@ import {
     SubmitButton,
     SignLink,
     SignLinkText,
+    FacebookButton,
+    FirebaseLoginContainer,
 } from './styles';
 
 export default function SignIn() {
@@ -37,6 +49,7 @@ export default function SignIn() {
                     source={img}
                     style={{ width: 175, height: 175, marginBotton: 20 }}
                 />
+
                 <Form>
                     <FormInput
                         icon="mail-outline"
@@ -68,7 +81,8 @@ export default function SignIn() {
                         Acessar
                     </SubmitButton>
                 </Form>
-                <SignLink onPress={() => navigation.navigate('SignUp')}>
+
+                {/* <SignLink onPress={() => navigation.navigate('SignUp')}>
                     <SignLinkText>
                         <Icon
                             style={{ margin: '50px' }}
@@ -79,7 +93,7 @@ export default function SignIn() {
                         ></Icon>{' '}
                         Criar Conta Gratuita
                     </SignLinkText>
-                </SignLink>
+                </SignLink> */}
             </Container>
         </Background>
     );

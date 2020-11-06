@@ -14,11 +14,11 @@ export const Container = styled.View`
 
 export const Form = styled.View`
     align-self: stretch;
-    margin: 50px 30px 10px 30px;
+    margin: 10px 30px 10px 30px;
 `;
 
 export const FormInput = styled(Input)`
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 `;
 
 export const SubmitButton = styled(Button)`
@@ -33,4 +33,24 @@ export const SignLinkText = styled.Text`
     color: #fff;
     font-weight: bold;
     font-size: 16px;
+`;
+
+export const TopText1 = styled.Text`
+    color: #fff;
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 10px;
+`;
+
+export const TopText2 = styled.Text`
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+`;
+
+export const TopView = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 10px 10px 10px;
 `;

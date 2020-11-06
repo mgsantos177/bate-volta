@@ -6,10 +6,23 @@ export const Container = styled.View`
     padding: 20px;
 `;
 
+export const TitleView = styled.View`
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+`;
+
+export const TitleArea = styled.View`
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
+export const IconArea = styled.View``;
+
 export const Title = styled.Text`
     display: flex;
-    align-self: center;
-    margin-bottom: 30px;
+    align-items: flex-start;
     font-size: 20px;
     font-weight: bold;
 `;
@@ -52,7 +65,7 @@ export const Name = styled.Text`
     font-weight: bold;
 `;
 
-export const Date = styled.Text`
+export const DateText = styled.Text`
     margin-top: 10px;
     font-size: 15px;
     font-weight: 900;

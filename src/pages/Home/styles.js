@@ -5,12 +5,17 @@ export const Container = styled.View`
     flex: 1;
 `;
 
+export const NotificationArea = styled.View`
+    margin: 20px 15px 0 0;
+    margin-left: auto;
+`;
+
 export const Title = styled.Text`
     font-size: 28px;
     color: black;
     font-weight: bold;
     align-self: flex-start;
-    margin: 50px 0 0 20px;
+    margin: 10px 0 0 20px;
 `;
 
 export const TitleDesc = styled.Text`

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { parseISO, format } from 'date-fns';
+import Modal from '../../../components/Modal';
+
 import pt from 'date-fns/locale/pt';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -8,37 +10,87 @@ import api from '../../../services/api';
 import {
     Container,
     Content,
+    IconArea,
     Image,
     Info,
     Name,
-    Date,
     Owner,
     OwnerInfo,
     Title,
+    TitleArea,
+    TitleView,
     Price,
     PriceText,
     PriceInfo,
 } from './styles';
 import StartRating from 'react-native-star-rating';
+import { DateText } from '~/components/DataInput/styles';
 const Categoria = ({ route }) => {
     const [events, setEvents] = useState([]);
+    const [cidadeDestino, setCidadeDestino] = useState('');
+    const [dataPartida, setDataPartida] = useState('');
+    const [dataRetorno, setDataRetorno] = useState('');
+
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const { filtro } = route.params;
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
 
     async function loadEvents() {
+
         let response;
-        if (filtro) {
+        let helper = '';
+        if (cidadeDestino) {
+            helper = `&cidade_destino=${cidadeDestino}`;
             response = await api.get(
-                `/events/category?limit=10&categoria=${filtro}`
+                `/events/category?limit=10&cidade_destino=${cidadeDestino}`
             );
-        } else {
-            response = await api.get(`/events`);
         }
+        if (filtro) {
+            helper = helper + `&categoria=${filtro}`;
+
+            response = await api.get(
+                `/events/category?limit=10&categoria=${filtro}&cidade_destino=${cidadeDestino}`
+            );
+        }
+
+        if (dataPartida) {
+            const dataPartida2 = new Date(dataPartida);
+            helper = helper + `&data_inicio=${dataPartida2}`;
+        }
+
+        if (dataRetorno) {
+            const dataRetorno2 = new Date(dataRetorno);
+            helper = helper + `&data_fim=${new Date(dataRetorno2)}`;
+        }
+
+        response = await api.get(`/events/category?limit=10${helper}`);
 
         setEvents(response.data);
     }
+
+    const applyFilter = async () => {
+        await loadEvents();
+    };
+
+    const cleanFilter = async () => {
+        await setCidadeDestino();
+        await setDataPartida();
+        await setDataRetorno();
+        await loadEvents();
+    };
+
+    const applyFilterCidadeDestino = async (value) => {
+        await setCidadeDestino(value);
+    };
+
+    const applyDataPartida = async (value) => {
+        await setDataPartida(value);
+    };
+
+    const applyDataRetorno = async (value) => {
+        await setDataRetorno(value);
+    };
 
     useEffect(() => {
         if (isFocused) {
@@ -54,9 +106,24 @@ const Categoria = ({ route }) => {
     return (
         <Background>
             <Container>
-                <Title>
-                    {filtro ? filtro.toUpperCase() : 'Todos os Eventos'}
-                </Title>
+                <TitleView>
+                    <TitleArea>
+                        <Title>
+                            {filtro ? filtro.toUpperCase() : 'Todos os Eventos'}
+                        </Title>
+                    </TitleArea>
+                    <IconArea>
+                        <Modal
+                            data={events}
+                            applyFilter={applyFilter}
+                            cleanFilter={cleanFilter}
+                            cidadeDestino={applyFilterCidadeDestino}
+                            dataPartida={applyDataPartida}
+                            dataRetorno={applyDataRetorno}
+                        />
+                    </IconArea>
+                </TitleView>
+
                 <FlatList
                     data={events}
                     keyExtractir={(item) => String(events.id)}
@@ -71,9 +138,12 @@ const Categoria = ({ route }) => {
                             <Content>
                                 <Image
                                     source={{
-                                        uri: item.EventFiles[0]
-                                            ? `${baseURL}/files/${item.EventFiles[0].path}`
+                                        uri: item.images
+                                            ? `${baseURL}/${item.images[0]}`
                                             : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                                    }}
+                                    style={{
+                                        resizeMode: 'cover',
                                     }}
                                 />
                                 <Info>
@@ -92,7 +162,7 @@ const Categoria = ({ route }) => {
                                             fullStarColor={'gold'}
                                         />
                                     </OwnerInfo>
-                                    <Date>
+                                    <DateText>
                                         {format(
                                             parseISO(item.data_inicio),
                                             'PPPPpp',
@@ -100,7 +170,7 @@ const Categoria = ({ route }) => {
                                                 locale: pt,
                                             }
                                         )}
-                                    </Date>
+                                    </DateText>
                                     <PriceInfo>
                                         <Price>R$ {item.preco}</Price>
                                         <PriceText> /pessoa</PriceText>

@@ -14,7 +14,7 @@ export const Container = styled.View`
 
 export const Form = styled.View`
     align-self: stretch;
-    margin: 50px 30px 10px 30px;
+    margin: 30px 30px 10px 30px;
 `;
 
 export const FormInput = styled(Input)`
@@ -22,7 +22,7 @@ export const FormInput = styled(Input)`
 `;
 
 export const SubmitButton = styled(Button)`
-    margin-top: 10px;
+    margin: 15px;
 `;
 
 export const SignLink = styled.TouchableOpacity`
@@ -33,4 +33,25 @@ export const SignLinkText = styled.Text`
     color: #fff;
     font-weight: bold;
     font-size: 16px;
+`;
+
+export const EmailPasswordButton = styled(Button)`
+    margin-bottom: 20px;
+    padding: 10px;
+`;
+
+export const AreaButton = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 300px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #999;
+    margin-bottom: 10px;
+`;
+
+export const IconArea = styled.Text`
+    margin: 0 30px 0 15px;
 `;

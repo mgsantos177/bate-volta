@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "241409991996",
+    "firebase_url": "https://bate-volta-dev-1602722939144.firebaseio.com",
+    "project_id": "bate-volta-dev-1602722939144",
+    "storage_bucket": "bate-volta-dev-1602722939144.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241409991996:android:e772c145b8253a08b96a39",
+        "android_client_info": {
+          "package_name": "com.modulo07"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241409991996-0c5gqh4q63ecrjdbjgfjdeph2ncqcaue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.modulo07",
+            "certificate_hash": "959b398cb04ddbc93a319e2965d437de40ee8298"
+          }
+        },
+        {
+          "client_id": "241409991996-8jkbdnsitk4gutm434ga8c3ij6e3dbq4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaHOCANQYbdzXXP20Mufq8P_LlN91YVOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241409991996-8jkbdnsitk4gutm434ga8c3ij6e3dbq4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

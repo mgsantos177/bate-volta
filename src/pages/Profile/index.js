@@ -23,13 +23,12 @@ const Profile = () => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const navigation = useNavigation();
-    const baseURL = 'http://10.0.2.2:3333';
+    const baseURL = 'http://10.0.2.2:3332';
 
     const [userData, setUserData] = useState();
 
     async function getUserDetails() {
         const response = await api.get(`/user/${profile.id}`);
-        console.tron.log(response);
         setUserData(response.data);
     }
 
@@ -39,7 +38,7 @@ const Profile = () => {
         }
     }, [isFocused]);
 
-    console.tron.log(userData);
+
 
     function handleLogout() {
         dispatch(signOut());
