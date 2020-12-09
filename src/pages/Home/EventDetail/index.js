@@ -66,9 +66,16 @@ const EventDetail = ({ route }) => {
         locale: pt,
     });
 
-    const images2 = ['https://api.adorable.io/avatars/285/abott@adorable.png'];
+    const images2 = ['https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png'];
 
-    console.log(images);
+    const redirectUserProfile = async () => {
+        await navigation.navigate('profile', {
+            screen: 'History',
+            params: { userId: data.criado_por },
+        });
+    };
+
+
     return (
         <Background>
             <Container style={{ flex: 1 }}>
@@ -77,7 +84,7 @@ const EventDetail = ({ route }) => {
                         source={{
                             uri: data.EventFiles[0]
                                 ? `${baseURL}/files/${data.EventFiles[0].path}`
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                                : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                         }}
                         style={{
                             width: '100%',
@@ -120,7 +127,13 @@ const EventDetail = ({ route }) => {
                     >
                         <Title>{data.name}</Title>
                         <OwnerInfo>
-                            <Owner>com {data.User.name}</Owner>
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    await redirectUserProfile();
+                                }}
+                            >
+                                <Owner>com {data.User.name}</Owner>
+                            </TouchableOpacity>
                             <StartRating
                                 disabled={true}
                                 maxStars={5}
@@ -146,15 +159,15 @@ const EventDetail = ({ route }) => {
                             <MoreInfo>
                                 <TitleInfo>Local de Partida:</TitleInfo>
                                 <Info>
-                                    {data.end_partida}, {data.cidade_partida} -{' '}
+                                    {data.end_partida}, {data.cidade_partida} -
                                     {data.estado_partida}
                                 </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Endereço do Destino:</TitleInfo>
                                 <Info>
-                                    {' '}
-                                    {data.end_destino}, {data.cidade_destino} -{' '}
+
+                                    {data.end_destino}, {data.cidade_destino} -
                                     {data.estado_destino}
                                 </Info>
                             </MoreInfo>
@@ -228,8 +241,8 @@ const EventDetail = ({ route }) => {
                                     </>
                                 ) : (
                                     <AnswerText>
-                                        {' '}
-                                        Nenhuma pergunta até o momento{' '}
+
+                                        Nenhuma pergunta até o momento
                                     </AnswerText>
                                 )}
                                 <QuestionLink

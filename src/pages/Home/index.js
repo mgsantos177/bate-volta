@@ -37,7 +37,7 @@ const Home = () => {
         const getNotification = await api.get('/notifications/active');
         setEvents(response.data);
 
-        console.tron.log(getNotification);
+
 
         setNotifications(getNotification.data);
     }

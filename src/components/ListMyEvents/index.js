@@ -16,7 +16,7 @@ import {
 import praia from '../../assets/praia.jpg';
 
 const ListMyEvents = ({ data }) => {
-    const baseURL = 'http://10.0.2.2:3332';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
     const navigation = useNavigation();
 
     const dateParsed = useMemo(() => {
@@ -37,9 +37,9 @@ const ListMyEvents = ({ data }) => {
                 <Left>
                     <Avatar
                         source={{
-                            uri: data.EventFiles[0]
-                                ? `${baseURL}/files/${data.EventFiles[0].path}`
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                            uri: data.images[0]
+                                ? `${baseURL}/${data.images[0]}`
+                                : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                         }}
                     />
                     <Info>

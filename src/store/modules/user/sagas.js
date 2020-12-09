@@ -6,16 +6,9 @@ import { updateProfileSuccess, updateProfileFailure } from './actions';
 
 export function* updateProfile({ payload }) {
     try {
-        const {
-            name,
-            cpf,
-            telefone,
-            data_nasc,
-            email,
-            avatar_id,
-        } = payload.data;
+        const { name, telefone, data_nasc, email } = payload.data;
 
-        const profile = { name, cpf, telefone, data_nasc, email, avatar_id };
+        const profile = { name, telefone, data_nasc, email };
 
         const response = yield call(api.put, 'users', profile);
         Alert.alert('Sucesso!', 'Perfil atualizado com sucesso');

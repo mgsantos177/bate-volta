@@ -1,39 +1,52 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Container, TextInput, SubmitButton } from './styles';
-import api from '../../../../services/api';
+import Background from '../../../../../../../components/Background/home';
 
-const NewQuestion = ({ route }) => {
-    const data = route.params.event;
+import {
+    Container,
+    TextInput,
+    SubmitButton,
+    TitleText,
+    Question,
+} from './styles';
+import api from '../../../../../../../services/api';
+
+const Responder = ({ route }) => {
+    const { data } = route.params;
     const navigation = useNavigation();
+
     const [text, setText] = useState('');
 
     async function sendQuestion() {
         try {
-            const response = await api.post(`/event/comments`, {
+            const response = await api.post(`/event/comments/answer`, {
                 comentario: text,
-                event: data.id,
+                id: data.id,
             });
 
-            await navigation.navigate('Event Details', {
+            await navigation.navigate('Manager', {
                 data,
             });
+
             await Alert.alert('Sucesso', 'Pergunta realizada');
         } catch (error) {
             Alert.alert('Erro', err.response.data.error);
         }
     }
 
+    console.tron.log(data);
     return (
         <Container>
+            <TitleText>Pergunta:</TitleText>
+            <Question>{data.comentario}</Question>
             <TextInput
                 multiline={true}
                 value={text}
                 onChangeText={setText}
                 numberOfLines={10}
                 textAlignVertical="top"
-                placeholder={'Escreva sua pergunta'}
+                placeholder={`${data.User.name} está aguardando sua resposta :)`}
             />
 
             <SubmitButton onPress={sendQuestion}> Enviar</SubmitButton>
@@ -41,4 +54,4 @@ const NewQuestion = ({ route }) => {
     );
 };
 
-export default NewQuestion;
+export default Responder;

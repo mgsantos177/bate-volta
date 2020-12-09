@@ -23,12 +23,12 @@ const Profile = () => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const navigation = useNavigation();
-    const baseURL = 'http://10.0.2.2:3332';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
 
     const [userData, setUserData] = useState();
 
     async function getUserDetails() {
-        const response = await api.get(`/user/${profile.id}`);
+        const response = await api.get(`/users/${profile.id}`);
         setUserData(response.data);
     }
 
@@ -37,8 +37,6 @@ const Profile = () => {
             getUserDetails();
         }
     }, [isFocused]);
-
-
 
     function handleLogout() {
         dispatch(signOut());
@@ -49,11 +47,10 @@ const Profile = () => {
                 <User>
                     <Avatar
                         source={{
-                            uri: userData
-                                ? userData.avatar
-                                    ? `${baseURL}/files/${userData.avatar.path}`
-                                    : 'https://api.adorable.io/avatars/285/abott@adorable.png'
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                            uri:
+                                userData && userData.avatar
+                                    ? `${baseURL}/${userData.avatar}`
+                                    : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                         }}
                     />
 
@@ -75,10 +72,16 @@ const Profile = () => {
                 </User>
 
                 <Separator />
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                    onPress={() =>
+                        navigation.navigate('History', {
+                            userId: userData.id,
+                        })
+                    }
+                >
                     <User>
                         <Icon name="stars" size={30} color={'#0388e0'} />
-                        <Text>Minhas Avaliações</Text>
+                        <Text>Meu Historico</Text>
                     </User>
                 </TouchableOpacity>
                 <Separator />
@@ -91,15 +94,6 @@ const Profile = () => {
                     </User>
                 </TouchableOpacity>
                 <Separator />
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('reservas')}
-                >
-                    <User>
-                        <Icon name="event" size={30} color={'#0388e0'} />
-                        <Text>Minhas Reservas</Text>
-                    </User>
-                </TouchableOpacity>
-                <Separator />
                 <TouchableOpacity onPress={() => {}}>
                     <User>
                         <Icon name="help-outline" size={30} color={'#0388e0'} />
@@ -107,7 +101,7 @@ const Profile = () => {
                     </User>
                 </TouchableOpacity>
                 <Separator />
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Sobre')}>
                     <User>
                         <Icon name="info-outline" size={30} color={'#0388e0'} />
                         <Text>Sobre</Text>

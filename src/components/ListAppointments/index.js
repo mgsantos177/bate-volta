@@ -16,6 +16,7 @@ import praia from '../../assets/praia.jpg';
 
 const ListAppointments = ({ data }) => {
     const navigation = useNavigation();
+    console.tron.log(data);
     const dateParsed = useMemo(() => {
         return formatRelative(parseISO(data.Event.data_inicio), new Date(), {
             locale: pt,
@@ -36,9 +37,9 @@ const ListAppointments = ({ data }) => {
                 <Left>
                     <Avatar
                         source={{
-                            uri: data.images
-                                ? `${baseURL}/${data.images[0]}`
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                            uri: data.Event.images
+                                ? `${baseURL}/${data.Event.images[0]}`
+                                : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                         }}
                     />
                     <Info>

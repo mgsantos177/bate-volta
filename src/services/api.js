@@ -4,7 +4,7 @@ import { signOut } from '../store/modules/auth/actions';
 const FormData = require('form-data');
 
 const api = axios.create({
-    baseURL: 'http://localhost:3332',
+    baseURL: 'http://10.0.0.118:3332',
 });
 
 api.registerInterceptWithStore = (store) => {

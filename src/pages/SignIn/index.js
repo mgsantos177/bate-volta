@@ -45,10 +45,7 @@ export default function SignIn() {
     return (
         <Background>
             <Container>
-                <Image
-                    source={img}
-                    style={{ width: 175, height: 175, marginBotton: 20 }}
-                />
+                <Image source={img} style={{ width: 175, height: 175 }} />
 
                 <Form>
                     <FormInput
@@ -90,7 +87,7 @@ export default function SignIn() {
                             size={20}
                             color="#fff"
                             margin="50px"
-                        ></Icon>{' '}
+                        ></Icon>
                         Criar Conta Gratuita
                     </SignLinkText>
                 </SignLink> */}

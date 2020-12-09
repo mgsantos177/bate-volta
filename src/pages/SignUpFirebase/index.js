@@ -75,7 +75,7 @@ export default function SignUpFirebase({ navigation, route }) {
                     <TopView>
                         <TopText1>Notamos que você é novo por aqui...</TopText1>
                         <TopText2>
-                            {' '}
+
                             Precisamos de mais algumas informações antes de
                             continuar!
                         </TopText2>

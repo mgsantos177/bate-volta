@@ -64,7 +64,7 @@ const Reserva = ({ route }) => {
                     source={{
                         uri: data.EventFiles[0]
                             ? `${baseURL}/files/${data.EventFiles[0].path}`
-                            : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                            : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                     }}
                 />
                 <Name>{data.name}</Name>

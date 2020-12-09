@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, Alert, TouchableOpacity, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { parseISO, format } from 'date-fns';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import pt from 'date-fns/locale/pt';
 import StartRating from 'react-native-star-rating';
-import Background from '../../../components/Background/home';
+import Background from '../../../../components/Background/home';
 import {
     Container,
     Content,
@@ -15,28 +15,34 @@ import {
     Title,
     DateInfo,
     Separator,
-    CancelButton,
     UpdateButton,
-    FooterInfo,
     EventInfo,
     Sessions,
-    MoreInfo,
-    TitleInfo,
-    Info,
+    TextInput,
 } from './styles';
 
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 const Details = ({ route }) => {
     const { data } = route.params;
+    console.tron.log(data);
     const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
     const navigation = useNavigation();
 
     const isFocused = useIsFocused();
     const [images, setImages] = useState([]);
+    const [rating, setRating] = useState(0);
+    const [text, setText] = useState('');
+    const [done, setDone] = useState([]);
 
     async function loadQuestions() {
         const response2 = await api.get(`/events/${data.Event.id}`);
+
+        const response = await api.post(`/user/rating/verify`, {
+            event: data.Event.id,
+        });
+
+        setDone(response.data);
 
         if (response2.data.images) {
             setImages(response2.data.images);
@@ -57,28 +63,26 @@ const Details = ({ route }) => {
         }
     );
 
-    async function handleCancel() {
-        try {
-            const response = await api.put(`/reserva/cancelar/${data.id}`);
-
-            Alert.alert('Sucesso', `${response.data.message}`);
-            navigation.navigate('Appointment');
-        } catch (err) {
-            Alert.alert('Erro!', `${err.response.data.error}`);
-        }
-    }
-
     const dateRetornoParsed = format(parseISO(data.Event.data_fim), 'PPPPpp', {
         locale: pt,
     });
 
     const images2 = ['https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png'];
 
-    const redirectUserProfile = async () => {
-        await navigation.navigate('profile', {
-            screen: 'History',
-            params: { userId: data.Event.criado_por },
-        });
+    const sendAvaliation = async () => {
+        try {
+            const response = await api.post('/user/rating', {
+                comentario: text,
+                nota: rating,
+                avaliado: data.Event.criado_por,
+                event: data.Event.id,
+            });
+
+            Alert.alert('Sucesso', 'Evento Avaliado');
+            await navigation.goBack();
+        } catch (error) {
+            Alert.alert('Erro', 'Erro ao avaliar Evento');
+        }
     };
 
     return (
@@ -111,26 +115,7 @@ const Details = ({ route }) => {
 
                     <Content>
                         <Title>{data.Event.name}</Title>
-                        <OwnerInfo>
-                            <TouchableOpacity
-                                onPress={async () => {
-                                    await redirectUserProfile();
-                                }}
-                            >
-                                <Owner>com {data.Event.User.name}</Owner>
-                            </TouchableOpacity>
-                            <StartRating
-                                disabled={true}
-                                maxStars={5}
-                                rating={4}
-                                starSize={18}
-                                iconSet={'MaterialIcons'}
-                                fullStar={'star'}
-                                emptyStar={'star-border'}
-                                halfStar={'star-half'}
-                                fullStarColor={'gold'}
-                            />
-                        </OwnerInfo>
+
                         <DateInfo>Partida: {datePartidaParsed}</DateInfo>
                         <DateInfo>Retorno: {dateRetornoParsed}</DateInfo>
                         <Owner>
@@ -138,54 +123,75 @@ const Details = ({ route }) => {
                             evento
                         </Owner>
                         <Separator />
-                        <EventInfo>
-                            <Sessions>Descrição:</Sessions>
-                            <Text>{data.Event.descricao}</Text>
-                            <Separator />
-                            <Sessions>Mais Informações:</Sessions>
-                            <MoreInfo>
-                                <TitleInfo>Local de Partida:</TitleInfo>
-                                <Info>
-                                    {data.Event.end_partida},
-                                    {data.Event.cidade_partida} -
-                                    {data.Event.estado_partida}
-                                </Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Endereço do Destino:</TitleInfo>
-                                <Info>
+                        {done ? (
+                            <>
+                                <Sessions>Você já avaliou esse evento</Sessions>
+                                <OwnerInfo>
+                                    <Owner>com {data.Event.User.name}</Owner>
+                                </OwnerInfo>
+                                <View
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                    }}
+                                >
+                                    <StartRating
+                                        disabled={true}
+                                        maxStars={5}
+                                        rating={done.nota}
+                                        starSize={22}
+                                        iconSet={'MaterialIcons'}
+                                        fullStar={'star'}
+                                        emptyStar={'star-border'}
+                                        halfStar={'star-half'}
+                                        fullStarColor={'gold'}
+                                    />
+                                </View>
 
-                                    {data.Event.end_destino},
-                                    {data.Event.cidade_destino} -
-                                    {data.Event.estado_destino}
-                                </Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Tempo de viagem:</TitleInfo>
-                                <Info>{data.Event.tempo_viagem} hrs</Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Tipo de Veiculo:</TitleInfo>
-                                <Info>{data.Event.tipo_veiculo}</Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Modelo do Veiculo:</TitleInfo>
-                                <Info>{data.Event.modelo_veiculo}</Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Placa do Veiculo:</TitleInfo>
-                                <Info>{data.Event.placa_veiculo}</Info>
-                            </MoreInfo>
-                            <MoreInfo>
-                                <TitleInfo>Cor do Veiculo:</TitleInfo>
-                                <Info>{data.Event.cor_veiculo}</Info>
-                            </MoreInfo>
-                        </EventInfo>
+                                <Sessions>Sua descrição do evento:</Sessions>
+                                <DateInfo>{done.comentario}</DateInfo>
+                            </>
+                        ) : (
+                            <EventInfo>
+                                <Sessions>
+                                    Avaliar evento de {data.Event.User.name}:
+                                </Sessions>
+
+                                <StartRating
+                                    maxStars={5}
+                                    rating={rating}
+                                    starSize={35}
+                                    iconSet={'MaterialIcons'}
+                                    fullStar={'star'}
+                                    emptyStar={'star-border'}
+                                    halfStar={'star-half'}
+                                    fullStarColor={'gold'}
+                                    selectedStar={(value) => setRating(value)}
+                                />
+                                <TextInput
+                                    multiline={true}
+                                    value={text}
+                                    onChangeText={setText}
+                                    numberOfLines={4}
+                                    textAlignVertical="top"
+                                    placeholder={
+                                        'Faça uma descrição de como foi o evento'
+                                    }
+                                />
+
+                                <UpdateButton
+                                    title="Reservar"
+                                    onPress={sendAvaliation}
+                                >
+                                    Enviar
+                                </UpdateButton>
+                            </EventInfo>
+                        )}
                     </Content>
                     <Separator />
                 </ScrollView>
 
-                <FooterInfo>
+                {/* <FooterInfo>
                     <UpdateButton
                         title="Reservar"
                         onPress={() =>
@@ -194,6 +200,7 @@ const Details = ({ route }) => {
                             })
                         }
                     >
+
                         Alterar
                     </UpdateButton>
                     <CancelButton
@@ -214,9 +221,10 @@ const Details = ({ route }) => {
                             )
                         }
                     >
+
                         Cancelar
                     </CancelButton>
-                </FooterInfo>
+                </FooterInfo> */}
             </Container>
         </Background>
     );

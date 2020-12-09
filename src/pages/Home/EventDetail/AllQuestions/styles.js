@@ -13,11 +13,11 @@ export const List = styled.FlatList.attrs({
 export const Hour = styled.Text``;
 
 export const QuestionLink = styled.TouchableOpacity`
-    bottom:30;
-    align-self:center;  
+    bottom:30px;
+    align-self:center;
 `;
 export const QuestionLinkText = styled.Text`
-    
+
     font-weight: 600;
     font-size: 20px;
     color: #2678e2;

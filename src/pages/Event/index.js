@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { Picker } from '@react-native-community/picker';
 import Modal from 'react-native-modal';
 
-import DataInput from '../../components/DataInput';
+import DataInput from '../../components/DataInput2';
 
 import cep from 'cep-promise';
 
@@ -248,9 +248,10 @@ class Event extends React.Component {
             await this.sendPhotos(resp.data.id);
 
             Alert.alert('Sucesso', 'Evento criado com sucesso');
+            await this.clean;
         } catch (error) {
             console.tron.log(error);
-            Alert.alert('Erro', 'Erro ao criar evento');
+            Alert.alert('Erro', `${error}`);
         }
     }
 
@@ -463,7 +464,8 @@ class Event extends React.Component {
                         <DataInput
                             text={'-                                     '}
                             onChange={(e) => {
-                                this.setState({ dataPartida: e });
+                                console.tron.log(new Date(e));
+                                this.setState({ dataPartida: new Date(e) });
                             }}
                             color={'#fff'}
                             colorIcon={'#000'}
@@ -474,14 +476,17 @@ class Event extends React.Component {
                         <DataInput
                             text={'-                                     '}
                             onChange={(e) => {
-                                this.setState({ dataRetorno: e });
-                                // this.props.dataPartida(e);
+                                console.tron.log(e);
+                                this.setState({ dataRetorno: new Date(e) });
                             }}
                             color={'#fff'}
                             colorIcon={'#000'}
                             style={{ height: 10 }}
-                            date={helperData2}
+                            date2={(e) => {
+                                console.tron.log(e);
+                            }}
                         />
+
                         <Label>Preço</Label>
                         <TextInput
                             style={{ height: 40 }}
@@ -608,7 +613,6 @@ class Event extends React.Component {
                                 title="Criar Evento"
                                 onPress={this.createEvent}
                             >
-                                {' '}
                                 Criar Evento
                             </ButtonEvent>
                         </ButtonArea>

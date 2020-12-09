@@ -32,8 +32,6 @@ const Details = ({ route }) => {
     const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
     const navigation = useNavigation();
 
-    console.tron.log(data);
-
     const isFocused = useIsFocused();
     const [images, setImages] = useState([]);
     const [eventData, setEventData] = useState();
@@ -59,10 +57,10 @@ const Details = ({ route }) => {
 
     async function handleCancel() {
         try {
-            const response = await api.put(`/reserva/cancelar/${data.id}`);
+            const response = await api.put(`/events/cancelar/${data.id}`);
 
             Alert.alert('Sucesso', `${response.data.message}`);
-            nativagation.navigate('Appointment');
+            nativagation.navigate('Profile');
         } catch (err) {
             Alert.alert('Erro!', `${err.response.data.error}`);
         }
@@ -72,7 +70,9 @@ const Details = ({ route }) => {
         locale: pt,
     });
 
-    const images2 = ['https://api.adorable.io/avatars/285/abott@adorable.png'];
+    const images2 = [
+        'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
+    ];
 
     return (
         <Background>
@@ -116,15 +116,14 @@ const Details = ({ route }) => {
                             <MoreInfo>
                                 <TitleInfo>Local de Partida:</TitleInfo>
                                 <Info>
-                                    {data.end_partida}, {data.cidade_partida} -{' '}
+                                    {data.end_partida}, {data.cidade_partida} -
                                     {data.estado_partida}
                                 </Info>
                             </MoreInfo>
                             <MoreInfo>
                                 <TitleInfo>Endereço do Destino:</TitleInfo>
                                 <Info>
-                                    {' '}
-                                    {data.end_destino}, {data.cidade_destino} -{' '}
+                                    {data.end_destino}, {data.cidade_destino} -
                                     {data.estado_destino}
                                 </Info>
                             </MoreInfo>
@@ -157,12 +156,12 @@ const Details = ({ route }) => {
                     <UpdateButton
                         title="Reservar"
                         onPress={() =>
-                            navigation.navigate('Update Appointment', {
+                            navigation.navigate('Manager', {
                                 data,
                             })
                         }
                     >
-                        Lista de Passageiros
+                        Gerenciar Evento
                     </UpdateButton>
                     <CancelButton
                         title="Reservar"
@@ -182,7 +181,6 @@ const Details = ({ route }) => {
                             )
                         }
                     >
-                        {' '}
                         Cancelar
                     </CancelButton>
                 </FooterInfo>

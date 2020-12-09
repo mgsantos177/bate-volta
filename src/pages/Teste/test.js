@@ -104,22 +104,19 @@ function FirebaseSignIn() {
     return (
         <Background>
             <Container>
-                <Image
-                    source={img}
-                    style={{ width: 175, height: 175, marginBotton: 20 }}
-                />
+                <Image source={img} style={{ width: 175, height: 175 }} />
 
                 <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                     <AreaButton style={{}}>
                         <IconArea>
-                            {' '}
+
                             <Icon2
                                 style={{ margin: '50px' }}
                                 name="email"
                                 size={20}
                                 color="#fff"
                                 margin="50px"
-                            ></Icon2>{' '}
+                            ></Icon2>
                         </IconArea>
                         <Text style={{ color: '#fff', fontWeight: 'bold' }}>
                             Continuar com Email e Senha
@@ -130,7 +127,7 @@ function FirebaseSignIn() {
                 <TouchableOpacity onPress={onGoogleButtonPress}>
                     <AreaButton style={{ backgroundColor: '#fff' }}>
                         <IconArea>
-                            {' '}
+
                             <Icon2
                                 style={{ margin: '50px' }}
                                 name="google"
@@ -192,7 +189,7 @@ function FirebaseSignIn() {
                             size={20}
                             color="#fff"
                             margin="50px"
-                        ></Icon>{' '}
+                        ></Icon>
                         Criar Conta Gratuita
                     </SignLinkText>
                 </SignLink>

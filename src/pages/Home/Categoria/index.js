@@ -37,7 +37,6 @@ const Categoria = ({ route }) => {
     const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
 
     async function loadEvents() {
-
         let response;
         let helper = '';
         if (cidadeDestino) {
@@ -138,9 +137,10 @@ const Categoria = ({ route }) => {
                             <Content>
                                 <Image
                                     source={{
-                                        uri: item.images
-                                            ? `${baseURL}/${item.images[0]}`
-                                            : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                                        uri:
+                                            item.images.length > 0
+                                                ? `${baseURL}/${item.images[0]}`
+                                                : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                                     }}
                                     style={{
                                         resizeMode: 'cover',

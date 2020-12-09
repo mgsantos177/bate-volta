@@ -29,9 +29,10 @@ const Events = ({ data }) => {
                 <Left>
                     <Avatar
                         source={{
-                            uri: data.images
-                                ? `${baseURL}/${data.images[0]}`
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
+                            uri:
+                                data.images.length > 0
+                                    ? `${baseURL}/${data.images[0]}`
+                                    : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
                         }}
                     />
 

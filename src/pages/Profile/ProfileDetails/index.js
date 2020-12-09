@@ -1,7 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 
-import axios from 'axios';
-
 import ImagePicker from 'react-native-image-picker';
 import Background from '../../../components/Background/home';
 
@@ -21,7 +19,7 @@ import {
 } from './styles';
 import api from '../../../services/api';
 import { updateProfileRequest } from '../../../store/modules/user/actions';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ProfileDetails = ({ route }) => {
@@ -30,9 +28,11 @@ const ProfileDetails = ({ route }) => {
     const isFocused = useIsFocused();
 
     async function getUserDetails() {
-        const response = await api.get(`/user/${userData.id}`);
+        const response = await api.get(`/users/${userData.id}`);
 
         userData = response.data;
+
+        setAllData(response.data);
     }
 
     useEffect(() => {
@@ -41,23 +41,24 @@ const ProfileDetails = ({ route }) => {
         }
     }, [isFocused]);
 
+    // const userDate = new Date(allData.data_nasc);
+
+    const [allData, setAllData] = useState([]);
+    const [avatarPhoto, setAvatar] = useState('');
+    const [date, setDate] = useState(new Date(userData.data_nasc));
+    const [name, setName] = useState(userData.name);
+    const [cpf, setCpf] = useState(userData.cpf);
+    const [telefone, setTelefone] = useState(userData.telefone);
+    const [email, setEmail] = useState(userData.email);
+
     const loading = useSelector((state) => state.auth.loading);
-    const baseURL = 'http://10.0.2.2:3332';
+    const baseURL = 'https://bate-volta.s3.us-east-2.amazonaws.com';
     const cpfRef = useRef();
     const dataNascRef = useRef();
     const telefoneRef = useRef();
     const emailRef = useRef();
     const dispatch = useDispatch();
     const navigation = useNavigation();
-
-    const userDate = new Date(userData.data_nasc);
-
-    const [avatarPhoto, setAvatar] = useState('');
-    const [date, setDate] = useState(userDate);
-    const [name, setName] = useState(userData.name);
-    const [cpf, setCpf] = useState(userData.cpf);
-    const [telefone, setTelefone] = useState(userData.telefone);
-    const [email, setEmail] = useState(userData.email);
 
     function changeCPF(num) {
         const formatNum = num.replace(
@@ -99,13 +100,9 @@ const ProfileDetails = ({ route }) => {
                     type: 'image/jpeg',
                 });
 
+                await api.post('/files', data);
 
-                const resp = await api.post('/files', data);
-
-                if (resp.data.id) {
-                    setAvatar(resp.data.path);
-                    await api.put('/users', { avatar_id: resp.data.id });
-                }
+                await getUserDetails();
             }
         );
     }
@@ -118,11 +115,9 @@ const ProfileDetails = ({ route }) => {
         dispatch(
             updateProfileRequest({
                 name,
-                cpf: cpfString,
                 data_nasc: dataNascConv,
                 telefone: telString,
                 email,
-                avatar_id: userData.avatar.id,
             })
         );
 
@@ -133,90 +128,92 @@ const ProfileDetails = ({ route }) => {
 
     return (
         <Background>
-            <Container>
-                <TouchableOpacity onPress={handleUpdateAvatar}>
-                    <Avatar
-                        source={{
-                            uri: avatarPhoto
-                                ? `${baseURL}/files/${avatarPhoto}`
-                                : userData.avatar
-                                ? `${baseURL}/files/${userData.avatar.path}`
-                                : 'https://api.adorable.io/avatars/285/abott@adorable.png',
-                        }}
-                        on
-                    />
-                </TouchableOpacity>
+            <ScrollView>
+                <Container>
+                    <TouchableOpacity onPress={handleUpdateAvatar}>
+                        <Avatar
+                            source={{
+                                uri: allData.avatar
+                                    ? `${baseURL}/${allData.avatar}`
+                                    : 'https://miro.medium.com/max/570/1*EelUYA6BOTNXtuRjSlaqHw.png',
+                            }}
+                        />
+                    </TouchableOpacity>
 
-                <Form>
-                    <FormInput
-                        icon="person"
-                        keyboardType="default"
-                        autoCapitalize="words"
-                        placeholder="Nome Completo"
-                        onSubmitEditing={() => cpfRef.current.focus()}
-                        value={name}
-                        onChangeText={setName}
-                    />
-                    <FormInput
-                        icon="subtitles"
-                        keyboardType="number-pad"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        placeholder="CPF"
-                        ref={cpfRef}
-                        value={cpf}
-                        onChangeText={(num) => changeCPF(num)}
-                    />
+                    <Form>
+                        <FormInput
+                            icon="person"
+                            keyboardType="default"
+                            autoCapitalize="words"
+                            placeholder="Nome Completo"
+                            onSubmitEditing={() => cpfRef.current.focus()}
+                            value={name}
+                            onChangeText={setName}
+                        />
+                        <FormInput
+                            editable={false}
+                            icon="subtitles"
+                            keyboardType="number-pad"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            placeholder="CPF"
+                            ref={cpfRef}
+                            value={cpf}
+                            onChangeText={(num) => changeCPF(num)}
+                        />
 
-                    <FormInput
-                        icon="phone"
-                        keyboardType="number-pad"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        placeholder="Telefone"
-                        onSubmitEditing={() => emailRef.current.focus()}
-                        ref={telefoneRef}
-                        value={telefone}
-                        onChangeText={(num) => changeTel(num)}
-                    />
+                        <FormInput
+                            icon="phone"
+                            keyboardType="number-pad"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            placeholder="Telefone"
+                            onSubmitEditing={() => emailRef.current.focus()}
+                            ref={telefoneRef}
+                            value={telefone}
+                            onChangeText={(num) => changeTel(num)}
+                        />
 
-                    <FormInput
-                        icon="mail-outline"
-                        keyboardType="email-address"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        placeholder="E-mail"
-                        onSubmitEditing={handleSubmit}
-                        ref={emailRef}
-                        value={email}
-                        onChangeText={setEmail}
-                    />
+                        <FormInput
+                            icon="mail-outline"
+                            keyboardType="email-address"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            placeholder="E-mail"
+                            onSubmitEditing={handleSubmit}
+                            ref={emailRef}
+                            value={email}
+                            onChangeText={setEmail}
+                        />
 
-                    <Data
-                        date={date}
-                        onChange={setDate}
-                        ref={dataNascRef}
-                        onSubmitEditing={() => emailRef.current.focus()}
-                        color={'#0388e0'}
-                        value={userData.dataNasc}
-                    />
+                        <Data
+                            date={date}
+                            onChange={setDate}
+                            ref={dataNascRef}
+                            onSubmitEditing={() => emailRef.current.focus()}
+                            color={'#0388e0'}
+                            value={
+                                allData.dataNasc ? allData.dataNasc : new Date()
+                            }
+                        />
 
-                    <SubmitButton
-                        loading={loading}
-                        title="Cadastrar"
-                        onPress={handleSubmit}
-                    >
-                        Atualizar Dados
-                    </SubmitButton>
-                    <PasswordButton
-                        loading={loading}
-                        title="Cadastrar"
-                        onPress={handleSubmit}
-                    >
-                        Alterar Senha
-                    </PasswordButton>
-                </Form>
-            </Container>
+                        <SubmitButton
+                            loading={loading}
+                            title="Cadastrar"
+                            onPress={handleSubmit}
+                        >
+                            Atualizar Dados
+                        </SubmitButton>
+                        <PasswordButton
+                            loading={loading}
+                            title="Cadastrar"
+                            onPress={handleSubmit}
+                        >
+                            Alterar Senha
+                        </PasswordButton>
+                    </Form>
+                </Container>
+            </ScrollView>
         </Background>
     );
 };

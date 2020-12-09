@@ -35,7 +35,7 @@ const DataInput = ({ date, onChange, color, text, colorIcon }) => {
             >
                 <Icon name="event" color={colorIcon || '#fff'} size={20} />
                 <DateText style={colorIcon && { color: colorIcon }}>
-                    {' '}
+
                     {date ? dataFormatted : text}
                 </DateText>
             </DateButton>
